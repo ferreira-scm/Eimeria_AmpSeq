@@ -1,0 +1,34 @@
+Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+lmerModLmerTest]
+Formula: log(Genome_copies) ~ log(1 + ASV1) + log(1 + ASV2) + log(1 +  
+    ASV3) + log(1 + ASV4) + (1 | dpi)
+   Data: SA.df
+
+REML criterion at convergence: 455
+
+Scaled residuals: 
+     Min       1Q   Median       3Q      Max 
+-3.00374 -0.62530 -0.04083  0.64606  2.50832 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ dpi      (Intercept) 5.550    2.356   
+ Residual             1.035    1.017   
+Number of obs: 152, groups:  dpi, 10
+
+Fixed effects:
+              Estimate Std. Error       df t value Pr(>|t|)    
+(Intercept)     5.0714     0.7740   8.7135   6.552 0.000122 ***
+log(1 + ASV1)   2.1070     0.3579 145.4075   5.888  2.6e-08 ***
+log(1 + ASV2)   3.5900     1.6798 142.1212   2.137 0.034299 *  
+log(1 + ASV3)   1.3963    10.1988 137.4505   0.137 0.891300    
+log(1 + ASV4)  17.6745    21.9905 137.1799   0.804 0.422939    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) l(1+ASV1 l(1+ASV2 l(1+ASV3
+log(1+ASV1) -0.171                           
+log(1+ASV2) -0.135  0.072                    
+log(1+ASV3) -0.009 -0.131   -0.158           
+log(1+ASV4) -0.017 -0.135    0.157   -0.003  
