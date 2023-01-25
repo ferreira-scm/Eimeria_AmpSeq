@@ -177,7 +177,7 @@ amplicon
 amplicon$species[amplicon$names_ASVs=="MarkN_10_F.Proti440R_28_R_ASV_5"] <- "falciformis"
 amplicon$BS[amplicon$names_ASVs=="MarkN_10_F.Proti440R_28_R_ASV_5"] <- 96
 
-amplicon$BS[amplicon$names_ASVs=="18S_0067a_deg_3Mod_53_F.NSR399_3Mod_53_R_ASV_4"] <- 59
+amplicon$BS[amplicon$names_ASVs=="18S_0067a_deg_3Mod_53_F.NSR399_3Mod_53_R_ASV_4"] <- 1
 
 amplicon$species[amplicon$names_ASVs=="wang1141_13_F.Nem_0425_6_3_R_ASV_2"] <- "falciformis"
 amplicon$BS[amplicon$names_ASVs=="wang1141_13_F.Nem_0425_6_3_R_ASV_2"] <- 43
@@ -270,6 +270,7 @@ E(net.grph)$weight <- abs(E(net.grph)$weight)
 # now plotting
 pdf("fig/Figure4_Eimeria_ASVs_Network.pdf",
                 width =15, height = 15)
+
 set.seed(1113)
 plot(net.grph,
      vertex.label=amplicon$species,
@@ -299,3 +300,5 @@ Eim.TSS@tax_table[,7] <- amplicon$species_FINAL
 Eim.Tw@tax_table[,7] <- amplicon$species_FINAL
 Eim.TSSw@tax_table[,7] <- amplicon$species_FINAL
 
+## save Eim phyloseq object
+saveRDS(Eim, "tmp/Wild/EimeriaSpeciesAssign.RDS")
