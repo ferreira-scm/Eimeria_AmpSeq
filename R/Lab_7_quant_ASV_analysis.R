@@ -449,7 +449,6 @@ legend <- get_legend(plot_SA_all+
 
 plot_MA_SA_ASV.l <- plot_grid(legend,plot_MA_SA_ASV, nrow=2, rel_heights=c(0.1, 1))
 
-ggplot2::ggsave(file="fig/Figure2.pdf", plot_MA_SA_ASV.l, width = 6, height = 10, dpi = 300)
 ggplot2::ggsave(file="fig/Figure2.png", plot_MA_SA_ASV.l, width = 6, height = 10, dpi = 350)
 
 forPrese <-plot_grid(plot_SA_all, plot_MA_all, nrow=1)
