@@ -1,5 +1,7 @@
 #!/usr/bin/Rscript
 
+# this script pre processes reads from microfluidics multiple amplicon sequencing
+# The SRA 
 library(ggplot2)
 library(dada2)
 #library(MultiAmplicon, lib.loc="/usr/local/lib/R/site-library/")
