@@ -1,27 +1,18 @@
 #!/usr/bin/Rscript
 
 #library(reshape)
-library(DECIPHER)
-library(phangorn)
-library(ShortRead)
 library(RColorBrewer)
 library("seqinr")
-library(treeio)
 library(ggtree)
 library(magrittr)
-library(ape)
 library(BiocManager)
 library(lmerTest)
 library(lme4)
 
-library(dada2)
-
 source("R/Lab_5_filtering.R")
 
 # Do ASV match beween MA and SA?
-#unfiltered
 rownames(Eim2@tax_table) %in% rownames(Eim@tax_table)
-#filtered
 colnames(Eim@otu_table)[1] == colnames(Eim2@otu_table)[1]
 colnames(Eim@otu_table)[2] == colnames(Eim2@otu_table)[2]
 
@@ -35,26 +26,21 @@ Eim.g <- tax_glom(Eim, taxrank="Genus")
 MA.e.g <- psmelt(Eim.g)
 
 SA.e$ASV <- "ASV"
-SA.e$ASV[which(SA.e$OTU==colnames(Eim2@otu_table)[5])] <- "ASV5"
 SA.e$ASV[which(SA.e$OTU==colnames(Eim2@otu_table)[4])] <- "ASV4"
 SA.e$ASV[which(SA.e$OTU==colnames(Eim2@otu_table)[3])] <- "ASV3"
 SA.e$ASV[which(SA.e$OTU==colnames(Eim2@otu_table)[2])] <- "ASV2"
 SA.e$ASV[which(SA.e$OTU==colnames(Eim2@otu_table)[1])] <- "ASV1"
 
 MA.e$ASV <- "ASV"
-MA.e$ASV[which(MA.e$OTU==colnames(Eim@otu_table)[3])] <- "ASV3"
 MA.e$ASV[which(MA.e$OTU==colnames(Eim@otu_table)[2])] <- "ASV2"
 MA.e$ASV[which(MA.e$OTU==colnames(Eim@otu_table)[1])] <- "ASV1"
 
-SA.e5 <- SA.e[which(SA.e$OTU==colnames(Eim2@otu_table)[5]),]
 SA.e4 <- SA.e[which(SA.e$OTU==colnames(Eim2@otu_table)[4]),]
 SA.e3 <- SA.e[which(SA.e$OTU==colnames(Eim2@otu_table)[3]),]
 SA.e2 <- SA.e[which(SA.e$OTU==colnames(Eim2@otu_table)[2]),]
 SA.e1 <- SA.e[which(SA.e$OTU==colnames(Eim2@otu_table)[1]),]
 
 ## dataset with asv1 and 2
-
-MA.e3 <- MA.e[which(MA.e$OTU==colnames(Eim@otu_table)[3]),]
 MA.e2 <- MA.e[which(MA.e$OTU==colnames(Eim@otu_table)[2]),]
 MA.e1 <- MA.e[which(MA.e$OTU==colnames(Eim@otu_table)[1]),]
 
@@ -123,9 +109,7 @@ SA.opg <- SA.opg[SA.opg$Abundance>0,]
 
 ### OPG correlation
 cor.test(log(SA.opg$OPG), log(SA.opg$Abundance))
-
 col7 <- c("#F1B6DA", "#C51B7D", "#DE77AE","#01665E", "#35978F", "#80CDC1","#C7EAE5")
-
 OPG_Abundance <- ggplot(SA.opg, aes(y=log(OPG), x=log(Abundance), fill=dpi))+
     geom_point(shape=21, size=4, alpha=0.8)+
     scale_fill_manual(values=col7)+
@@ -170,36 +154,36 @@ OPG_ab_panel <- plot_grid(legend, OPG_ab,  nrow=2, rel_heights=c(0.1, 0.8))
 
 
 # saving object so that we can plot them together with wild
-saveRDS(OPG_Abundance, "tmp/OPG_Abundance.R")
+#saveRDS(OPG_Abundance, "tmp/OPG_Abundance.R")
 # saving object so that we can plot them together with wild
-saveRDS(OPG_Abundance_MA, "tmp/OPG_Abundance_MA.R")
-saveRDS(OPG_ab_panel, "tmp/OPG_Abundance_MA_panel.R")
+#saveRDS(OPG_Abundance_MA, "tmp/OPG_Abundance_MA.R")
+#saveRDS(OPG_ab_panel, "tmp/OPG_Abundance_MA_panel.R")
 
 
 #### Checking specificity
+summary(SA.e.g$Abundance[SA.e.g$Genome_copies_ngDNA==0]>0) # 13 false positives
+summary(MA.e.g$Abundance[MA.e.g$Genome_copies_ngDNA==0]>0) # 3 false positives
 
-mean(SA.e.g$Abundance[SA.e.g$Genome_copies_ngDNA==0], na.rm=TRUE)
+# relative abundances of true positives and false positives
+SA.TP <- SA.e.g$Abundance[SA.e.g$Genome_copies_ngDNA>0]
+SA.TP <- SA.TP[SA.TP>0]
+mean(SA.TP, na.rm=TRUE)
+sd(SA.TP, na.rm=TRUE)
 
-SA.e.g$Abundance[SA.e.g$Genome_copies_ngDNA==0]
+SA.FP <- SA.e.g$Abundance[SA.e.g$Genome_copies_ngDNA==0]
+SA.FP <- SA.FP[SA.FP>0]
+mean(SA.FP, na.rm=TRUE)
+sd(SA.FP, na.rm=TRUE)
 
-sd(SA.e.g$Abundance[SA.e.g$Genome_copies_ngDNA==0], na.rm=TRUE)
+MA.TP <- MA.e.g$Abundance[MA.e.g$Genome_copies_ngDNA>0]
+MA.TP <- MA.TP[MA.TP>0]
+mean(MA.TP, na.rm=TRUE)
+sd(MA.TP, na.rm=TRUE)
 
-MA.e$Abundance[MA.e$Genome_copies_ngDNA==0]
-
-mean(MA.e.g$Abundance[MA.e.g$Genome_copies_ngDNA==0], na.rm=TRUE)
-
-sd(MA.e.g$Abundance[MA.e.g$Genome_copies_ngDNA==0], na.rm=TRUE)
-
-mean(SA.e.g$Abundance)
-sd(SA.e.g$Abundance)
-
-length(SA.e.g$Abundance)
-
-mean(MA.e.g$Abundance)
-
-sd(MA.e.g$Abundance)
-length(MA.e.g$Abundance)
-
+MA.FP <- MA.e.g$Abundance[MA.e.g$Genome_copies_ngDNA==0]
+MA.FP <- MA.FP[MA.FP>0]
+mean(MA.FP, na.rm=TRUE)
+sd(MA.FP, na.rm=TRUE)
 
 ############### Do all ASVs explain Eimeria genome copies?
 ################ preparing dataset for regressions
@@ -607,36 +591,53 @@ MA.all
 
 SA.all
 
+
+############### comparison between standard and microfluidics ASVs
 ma.sa_1 <- SA.e[, c("ASV", "Abundance", "EH_ID", "dpi", "labels")]
 ma.sa_2 <- MA.e[, c("ASV", "Abundance", "labels")]
-
 ma.sa <- merge(ma.sa_1, ma.sa_2, by=c("ASV", "labels"))
-# remove zeros
 
-ma.sa.0 <- ma.sa[ma.sa$Abundance.x>0,]
-ma.sa.0 <- ma.sa.0[ma.sa.0$Abundance.y>0,]
+cor.test(ma.sa[ma.sa$ASV=="ASV1","Abundance.x"],ma.sa[ma.sa$ASV=="ASV1","Abundance.y"], method="pearson")
 
-head(ma.sa)
+cor.test(ma.sa[ma.sa$ASV=="ASV2","Abundance.x"],ma.sa[ma.sa$ASV=="ASV2","Abundance.y"], method="pearson")
 
-ma.sa
-
-cor.test(ma.sa$Abundance.x, ma.sa$Abundance.y, method="pearson")
-cor.test(ma.sa.0$Abundance.x, ma.sa.0$Abundance.y, method="pearson")
-
-ASV.c <- ggplot(ma.sa, aes(x=Abundance.x, y=Abundance.y, fill=ASV))+
-    geom_point(size=4, shape=21, alpha=0.7)+
-    scale_fill_manual(values=c("#009E73", "mediumvioletred"), name="")+
-    xlab("Eimeria ASV abundance - single amplicon")+
-    ylab("Eimeria ASV abundance - multi-amplicon")+
-    annotate(geom="text", x=min(ma.sa$Abundance.x)+0.2, y=max(ma.sa$Abundance.y), label="rho=0.99, p<0.001", size=3)+
+ASV1.c <-ggplot(ma.sa[ma.sa$ASV=="ASV1",], aes(x=Abundance.x, y=Abundance.y))+
+    geom_point(colour="gray40", alpha=0.7)+
+    xlab("Standard PCR ASV1 abundance")+
+    ylab("Microfluidics PCR ASV1 abundance")+
+    stat_poly_eq(aes(label = paste(..eq.label.., ..rr.label.., sep = "~~~")),
+                                          parse = TRUE) +  
+    stat_poly_line(method="lm", color="black", fill="firebrick")+
+    coord_cartesian(ylim=c(0,1), xlim=c(0,1))+
     theme_bw(base_size=10)+
-    theme(panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank(),
-          text=element_text(size=10),
-          legend.position = "top",
-          axis.line = element_line(colour = "black"))
+    theme(axis.title.x = element_text(vjust = 0, size = 12),
+          axis.title.y = element_text(vjust = 2, size = 12))
 
-ASV.c
+library(ggpmisc)
+
+ASV2.c <-ggplot(ma.sa[ma.sa$ASV=="ASV2",], aes(x=Abundance.x, y=Abundance.y))+
+    geom_point(colour="gray40", alpha=0.7)+
+#    scale_fill_manual(values=c("#009E73", "mediumvioletred"), name="")+
+    xlab("Standard PCR ASV2 abundance")+
+    ylab("Microfluidics PCR ASV2 abundance")+
+    stat_poly_eq(aes(label = paste(..eq.label.., ..rr.label.., sep = "~~~")),
+                                          parse = TRUE) +  
+    stat_poly_line(method="lm", color="black", fill="firebrick")+
+    coord_cartesian(ylim=c(0,0.1), xlim=c(0,0.1))+
+    theme_bw(base_size=10)+
+    theme(axis.title.x = element_text(vjust = 0, size = 12),
+          axis.title.y = element_text(vjust = 2, size = 12))
+
+ASV2.c
+
+ASV1.c
+
+Fig1 <- plot_grid(ASV1.c, ASV2.c, labels="auto", nrow=1, align="hv")
+
+Fig1
+
+ggplot2::ggsave(file="fig/Figure1.pdf", Fig1, width = 8, height = 4, dpi = 300)
+ggplot2::ggsave(file="fig/Figure1.png", Fig1, width = 8, height = 4, dpi = 300)
 
 sa <- SA.e[, c("ASV", "Abundance", "EH_ID", "dpi", "labels")]
 sa$amp <- "sa"
@@ -661,7 +662,7 @@ ASV_sama <- ggplot(sama, aes(x=(Abundance), y=ASV, fill=amp))+
 
 ASV_sama
 
-Fig1 <- plot_grid(ASV.c, ASV_sama, labels="auto", nrow=1)
+
 
 ggplot2::ggsave(file="fig/Figure1-ASV_concordance.pdf", Fig1, width=8, height=4, dpi=300)
 ggplot2::ggsave(file="fig/Figure1-ASV_concordance.png", Fig1, width=8, height=4, dpi=300)
@@ -709,7 +710,7 @@ MA_Eimeria.ASVs <- ggplot(MA.e.0, aes(x=log(Genome_copies_ngDNA), y=log(Abundanc
           legend.position = "top",
           axis.line = element_line(colour = "black"))
 
-ASV.SA.MA <- plot_grid(SA_Eimeria.ASVs, MA_Eimeria.ASVs, ASV.c, nrow=1, labels="auto")
+ASV.SA.MA <- plot_grid(SA_Eimeria.ASVs, MA_Eimeria.ASVs, nrow=1, labels="auto")
 
 plot_grid(SA1,SA2,SA3,SA4) -> SA.asv
 plot_grid(MA1,MA2, nrow=2) -> MA.asv
@@ -830,41 +831,5 @@ cor.test(ASV2$Abundance.x, ASV2$Abundance.y)
 cor.test(log(1+ASV1$Abundance.x), log(1+ASV1$Abundance.y))
 cor.test(log(1+ASV2$Abundance.x), log(1+ASV2$Abundance.y))
 
-################## now the alignments
 
-############################
-#######################################################################################
-seqs <- DNAStringSet(getSequences(colnames(Eim@otu_table)))
-seqs2 <- DNAStringSet(getSequences(colnames(Eim2@otu_table)))
-
-## save ASV and reference 18S sequences for aligments
-## let's get all the sequences used in Jarquín-Díaz et al. 2019
-access.l <- c("JQ993669", "JQ993670","JQ993671","JQ993665", "JQ993659", "KU174470", "KU174461", "KU174464", "KU174480", "KU174483", "KU174462", "KU174463", "KU174468", "KU174479", "KU174449", "KU174450", "KU174465", "KU174467", "KU174474", "KU174451", "KU174459", "KU174485", "KU174487", "KU174472", "JQ993666","JQ993649", "JQ993650", "AF080614", "MH751998", "KT360995", "JF304148", "U40263","JQ993651", "AF311643","AF311644", "JQ993654", "JQ993655", "JQ993656", "JQ993657", "JQ993658", "JQ993660", "KU174475", "JQ993661", "JQ993662", "JQ993663", "JQ993664", "JQ993652", "JQ993667", "KU174454", "KU174469", "KU174481", "KU174456","KU174484", "KU174478", "KU174473", "KU174471",  "KU174455", "KU174457", "KU174476","KU174466", "KU174486", "KU174453","KU174458", "KU174460", "KU174452","KU174482", "AF246717", "KT184355","JQ993653", "AF307880", "AF339489","AF307878", "AF307876", "AF324214","AF339490", "AF339491", "AF307879", "AF339492", "AF307877", "AF311642", "KU192965", "KU192958", "KU192936", "KU192961", "KU192956", "KU192931", "KU192938", "KU192916")
-eim.db <- read.GenBank(access.l)
-eim.db.ID <- paste(names(eim.db), attr(eim.db, "species"), sep="_")
-# extra 18S falciformis
-Eimf <- read.GenBank("KT184339.1")
-Eimf.ID <- paste(names(Eimf), attr(Eimf, "species"), sep="_")
-
-# convert to DNAStringset
-eim.DB <- eim.db %>% as.character %>% lapply(.,paste0,collapse="") %>% unlist %>% DNAStringSet
-names(eim.DB) <- eim.db.ID
-
-Eim.f <- Eimf %>% as.character %>% lapply(.,paste0,collapse="") %>% unlist %>% DNAStringSet
-names(Eim.f) <- Eimf.ID
-
-names(eim.DB)
-
-refEim <- readDNAStringSet("/SAN/Susanas_den/AmpMarkers/wildEimeria18S/Eim_ref.fa")
-names(refEim) <- gsub("(\\s)", "_", names(refEim))
-
-#gotta correct here
-which(names(refEim)=="MH751946.1_Eimeria_vermiformis")
-names(refEim)[22] <- "MH751946.1_Eimeria_ferrisi"
-
-names(seqs2) <- c("Lab_single-multi-amplicon_ASV1", "Lab_single-multi-amplicon_ASV2", "Lab_single-amplicon_ASV3", "Lab_single-amplicon_ASV4")
-
-allSeqs <- c(eim.DB, Eim.f, refEim, seqs2)
-
-writeFasta(allSeqs, "tmp/Eimeria_seqs.fa")
 
