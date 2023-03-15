@@ -4,31 +4,31 @@ Formula: log(Genome_copies) ~ log(1 + ASV1) + log(1 + ASV2) + log(1 +
     ASV3) + log(1 + ASV4) + (1 | dpi)
    Data: SA.df
 
-REML criterion at convergence: 455
+REML criterion at convergence: 402.5
 
 Scaled residuals: 
-     Min       1Q   Median       3Q      Max 
--3.00374 -0.62530 -0.04083  0.64606  2.50832 
+    Min      1Q  Median      3Q     Max 
+-3.3845 -0.6262 -0.0759  0.5522  2.5193 
 
 Random effects:
  Groups   Name        Variance Std.Dev.
- dpi      (Intercept) 5.550    2.356   
- Residual             1.035    1.017   
+ dpi      (Intercept) 1.7503   1.3230  
+ Residual             0.8084   0.8991  
 Number of obs: 152, groups:  dpi, 10
 
 Fixed effects:
               Estimate Std. Error       df t value Pr(>|t|)    
-(Intercept)     5.0714     0.7740   8.7135   6.552 0.000122 ***
-log(1 + ASV1)   2.1070     0.3579 145.4075   5.888  2.6e-08 ***
-log(1 + ASV2)   3.5900     1.6798 142.1212   2.137 0.034299 *  
-log(1 + ASV3)   1.3963    10.1988 137.4505   0.137 0.891300    
-log(1 + ASV4)  17.6745    21.9905 137.1799   0.804 0.422939    
+(Intercept)     4.1187     0.4704   7.9131   8.756 2.43e-05 ***
+log(1 + ASV1)   8.8941     0.8397 115.0238  10.592  < 2e-16 ***
+log(1 + ASV2)  28.2848     4.4260 141.6670   6.391 2.23e-09 ***
+log(1 + ASV3) -12.0642    26.9694 136.0188  -0.447    0.655    
+log(1 + ASV4)  20.0273    59.0115 134.4683   0.339    0.735    
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Correlation of Fixed Effects:
             (Intr) l(1+ASV1 l(1+ASV2 l(1+ASV3
-log(1+ASV1) -0.171                           
-log(1+ASV2) -0.135  0.072                    
-log(1+ASV3) -0.009 -0.131   -0.158           
-log(1+ASV4) -0.017 -0.135    0.157   -0.003  
+log(1+ASV1) -0.346                           
+log(1+ASV2) -0.288  0.348                    
+log(1+ASV3)  0.004 -0.136   -0.219           
+log(1+ASV4)  0.004 -0.173    0.080   -0.016  
