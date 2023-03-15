@@ -267,7 +267,7 @@ e
     
 # save plots of what we have so far
 legend <- get_legend(a+
-          guides(fill=guide_legend(nrow=1, byrow=TRUE))+
+          guides(fill=guide_legend(nrow=3, byrow=TRUE))+
           theme(legend.position="top"))
 
 fCor <-plot_grid(a, b, c, d, e,legend,
