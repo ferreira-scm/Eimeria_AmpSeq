@@ -5,6 +5,9 @@ library(cocor)
 library(reshape2)
 library(microbiome)
 library(phyloseq)
+library(cowplot)
+library(microshades)
+library("ggpmisc")
 
 source("R/Lab_5_filtering.R")
 
@@ -29,23 +32,8 @@ sensit(SA.asv1)
 sensit(SA.asv2)
 
 # now plotting and doing correlation analysis and comparisons
-### for single amplicon
-Plotting_cor_MA.l(ps=sin.PS18S.slv, f.sin18.slv, "FigureS1_single-amplicon", dir="fig/")
-#adjusting p-value
-# tss,rle,clr,acs, rare
-p <- c(0.3243, 0.00001, 0.00001, 0.9665, 0.3759)
-p.adjust(p, method="BH")
-
-### for MA
-Plotting_cor_MA.l(ps=all.PS.l.slv[[37]], ps.f=f.all.l.slv[[37]], "FigureS2_multi-amplicon", dir="fig/")
-# tss,rle,clr,acs, rare
-p <- c(0.0046, 0.00001, 0.7266, 0.0002, 0.0009)
-round(p.adjust(p, method="BH"),3)
-
 ###################################### Plotting SA normalisation
 
-library(microshades)
-library("ggpmisc")
 eimf <- subset_taxa(f.all.l.slv[[37]], Genus%in%"g__Eimeria")
 
 #create total sums and Eimeria sums data frame
@@ -66,12 +54,14 @@ df <- df[df$Genome_copies_ngDNA>0,]
 a.cor <- cor.test(df$logGC, df$logFilEimeriaSums, method="pearson")
 
 print(a.cor)
-coul <- c(microshades_palette("micro_purple", 3, lightest=FALSE), microshades_palette("micro_orange", 3, lightest=FALSE), microshades_palette("micro_brown", 3, lightest=FALSE))
+coul <- c(microshades_palette("micro_purple", 3, lightest=FALSE), microshades_palette("micro_orange", 4, lightest=FALSE), microshades_palette("micro_brown", 3, lightest=FALSE))
+
+coul2 <- coul[-1]
 
 # plotting with abundance and prevalence filter correlation
 a <- ggplot(df, aes(y=logGC, x=logFilEimeriaSums))+
     geom_jitter(shape=21, position=position_jitter(0.2), size=2.5, aes(fill= dpi), color= "white", alpha=0.8)+
-    scale_fill_manual(values=coul)+
+    scale_fill_manual(values=coul2)+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
     ggtitle("No normalization: ASV read counts")+
@@ -98,7 +88,7 @@ b.cor <- cor.test(df$logGC, df$logTSS_Eim, method="pearson")
 # plotting TSS correlation
 b <- ggplot(df, aes(y=logGC, x=logTSS_Eim))+
     geom_jitter(shape=21, position=position_jitter(0.2), size=2.5, aes(fill= dpi), color= "white", alpha=0.8)+
-    scale_fill_manual(values=coul)+
+    scale_fill_manual(values=coul2)+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
     ggtitle("Total sum scaling")+
@@ -110,7 +100,6 @@ b <- ggplot(df, aes(y=logGC, x=logTSS_Eim))+
                                   margin=margin(10,0,10,0),
                                   size=12),
           legend.position= "none")
-b
 
 ###############################################################
 #### using TMM: Trimmed Mean by M-Values
@@ -135,7 +124,7 @@ c.cor
 # plotting CLR correlation
 c <- ggplot(df, aes(y=logGC, x=logTMM))+
     geom_jitter(shape=21, position=position_jitter(0.2), size=2.5, aes(fill= dpi), color= "white", alpha=0.8)+
-    scale_fill_manual(values=coul)+
+    scale_fill_manual(values=coul2)+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
     ggtitle("Trimmed mean by M-values")+
@@ -147,7 +136,6 @@ c <- ggplot(df, aes(y=logGC, x=logTMM))+
                                   margin=margin(10,0,10,0),
                                   size=12),
           legend.position= "none")
-c
 
 ########### centered log ratio
 Eimclr =microbiome::transform(f.all.l.slv[[37]], transform="clr")
@@ -166,7 +154,7 @@ d.cor
 # plotting CLR correlation
 d <- ggplot(df, aes(y=logGC, x=clr_Eim))+
     geom_jitter(shape=21, position=position_jitter(0.2), size=2.5, aes(fill= dpi), color= "white", alpha=0.8)+
-    scale_fill_manual(values=coul)+
+    scale_fill_manual(values=coul2)+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
     ggtitle("Centered log ratio")+
@@ -199,7 +187,7 @@ e.cor
 # plotting with rarefied abundance
 e <- ggplot(df.e, aes(y=logGC, x=logEim_rare))+
     geom_jitter(shape=21, position=position_jitter(0.2), size=2.5, aes(fill= dpi), color= "white", alpha=0.8)+
-    scale_fill_manual(values=coul)+
+    scale_fill_manual(values=coul2)+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
     ggtitle("Rarefied read counts")+
@@ -212,17 +200,16 @@ e <- ggplot(df.e, aes(y=logGC, x=logEim_rare))+
                                   size=12),
           legend.position= "none")
 
-e
-    
 # save plots of what we have so far
 legend <- get_legend(a+
           guides(fill=guide_legend(nrow=3, byrow=TRUE))+
           theme(legend.position="top"))
 
-fCor <-plot_grid(a, b, c, d, e,legend,
+fCor <-cowplot::plot_grid(a, b, c, d, e,legend,
               align="vh",
               labels=c("a", "b", "c", "d", "e"),
               nrow=3)
+
 fCor
 
 ggplot2::ggsave("fig/FigureS2.pdf", fCor, width = 8, height = 12, dpi = 300)
@@ -237,6 +224,10 @@ cocor(~logGC + logFilEimeriaSums | logGC + logTMM, data = df, test = c("hittner2
 cocor(~logGC + logFilEimeriaSums | logGC + clr_Eim, data = df, test = c("hittner2003", "zou2007"))
 
 cocor(~logGC + logFilEimeriaSums | logGC + logEim_rare, data = df.e, test = c("hittner2003", "zou2007"))
+
+p <- c(0.3243, 0.104, 0.00001, 0.3759)
+p.adjust(p, method="BH")
+
 
 rm(df)
 rm(df.e)
@@ -264,7 +255,6 @@ df <- df[df$Genome_copies_ngDNA>0,]
 a.cor <- cor.test(df$logGC, df$logFilEimeriaSums, method="pearson")
 
 a.cor
-coul <- c(microshades_palette("micro_purple", 4, lightest=FALSE), microshades_palette("micro_orange", 3, lightest=FALSE), microshades_palette("micro_brown", 3, lightest=FALSE))
 
 # plotting with abundance and prevalence filter correlation
 a <- ggplot(df, aes(y=logGC, x=logFilEimeriaSums))+
@@ -433,10 +423,6 @@ cocor(~logGC + logFilEimeriaSums | logGC + clr_Eim, data = df, test = c("hittner
 
 cocor(~logGC + logFilEimeriaSums | logGC + logEim_rare, data = df.e, test = c("hittner2003", "zou2007"))
 
-head(df.e)
-
-nrow(df.e)
-
-
-e
+p <- c(0.0046, 0.9445, 0.7266, 0.0009)
+p.adjust(p, method="BH")
 
