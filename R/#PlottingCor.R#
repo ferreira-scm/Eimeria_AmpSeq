@@ -277,52 +277,18 @@ fCor <-plot_grid(a, b, c, d, e,legend,
               align="vh",
               labels=c("a", "b", "c", "d", "e"),
               nrow=3)
-
 fCor
 
 ggplot2::ggsave("fig/FigureS1.pdf", fCor, width = 8, height = 12, dpi = 300)
 ggplot2::ggsave("fig/FigureS1.png", fCor, width = 8, height = 12, dpi = 300)
 
-#ggplot2::ggsave(file=paste(dir, name, "TSS-CS.png", sep=""), f, width = 5, height = 5, dpi = 600)
 
-### terrible coding here now...
-names(sdt)
+# testing differences between correlations
+cocor(~logGC + logFilEimeriaSums | logGC + logTSS_Eim, data = df, test = c("hittner2003", "zou2007"))
 
-cor.df <- sdt[,c("logGC", "logEimeriaSums", "logFilEimeriaSums", "logTSS_Eim", "logACS_Eim", "clr_Eim", "REL_Eim", "logEim_rare")]
+cocor(~logGC + logFilEimeriaSums | logGC + logTMM, data = df, test = c("hittner2003", "zou2007"))
 
-cor.df$REL_Eim <- cor.df$REL_Eim*-1
+cocor(~logGC + logFilEimeriaSums | logGC + clr_Eim, data = df, test = c("hittner2003", "zou2007"))
 
-cor.df1 <- na.omit(cor.df[!is.infinite(cor.df$logEimeriaSums),])
-
-#cor.df1 <- na.omit(cor.df1[cor.df1$logFilEimeriaSums>0,])
-cor.df2 <- na.omit(cor.df[!is.infinite(cor.df$logTSS_Eim),])
-cor.df2 <- cor.df2[!is.infinite(cor.df2$logGC),]
-print(cocor(~logGC + logFilEimeriaSums | logGC + logTSS_Eim, data = cor.df2, test = c("hittner2003", "zou2007")))
-
-cor.df3 <- na.omit(cor.df[!is.infinite(cor.df$logFilEimeriaSums),])
-cor.df3 <- cor.df3[!is.infinite(cor.df3$logGC),]
-print(cocor(~logGC + logFilEimeriaSums | logGC + REL_Eim, data = cor.df3,test = c("hittner2003", "zou2007")))
-
-cor.df4 <- na.omit(cor.df[!is.infinite(cor.df$logTSS_Eim),])
-cor.df4 <- cor.df4[!is.infinite(cor.df4$logGC),]
-print(cocor(~logGC + logFilEimeriaSums | logGC + clr_Eim, data = cor.df4,
-            test = c("hittner2003", "zou2007")))
-
-cor.df5 <- na.omit(cor.df[!is.infinite(cor.df$logACS_Eim),])
-cor.df5 <- cor.df5[!is.infinite(cor.df5$logGC),]
-print(cocor(~logGC + logFilEimeriaSums | logGC + logACS_Eim, data = cor.df5,
-            test = c("hittner2003", "zou2007")))
-
-cor.df6 <- na.omit(cor.df[!is.infinite(cor.df$logEim_rare),])
-cor.df6 <- cor.df6[!is.infinite(cor.df6$logGC),]
-print(cocor(~logGC + logFilEimeriaSums | logGC + logEim_rare, data = cor.df6,
-            test = c("hittner2003", "zou2007")))
-
-#png(filename=paste(dir, name, "COR.png", sep=""),
-#    width =14, height = 14, units = "in", res= 300)
-#fCor
-#dev.off()
-
-}
-
+cocor(~logGC + logFilEimeriaSums | logGC + logEim_rare, data = df.e, test = c("hittner2003", "zou2007"))
 
