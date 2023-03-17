@@ -12,6 +12,7 @@ library(data.table, lib.loc="/usr/local/lib/R/site-library/")
 library(taxonomizr)
 library(taxize)
 library(parallel)
+
 ## using the devel
 devtools::load_all("/SAN/Susanas_den/MultiAmplicon/")
 
@@ -24,23 +25,27 @@ doTax <- FALSE
 ###################Full run Microbiome#######################
 #Preparation of files
 ##These are the same steps that are followed by the DADA2 pipeline
-path <- "/SAN/Susanas_den/gitProj/HMHZ/data/2018_22_HMHZ_1_2"
+path <- "/SAN/Susanas_den/gitProj/HMHZ/data/2018_22_HMHZ_1_1/"
+
 fastqFiles <- list.files(path, pattern=".fastq.gz$", full.names=TRUE) #take all fastaq files from the folder
 fastqF <- grep("_R1_001.fastq.gz", fastqFiles, value = TRUE) #separate the forward reads
 fastqR <- grep("_R2_001.fastq.gz", fastqFiles, value = TRUE) #separate the reverse reads
+
 samples <- gsub("_S\\d+_L001_R1_001.fastq\\.gz", "\\1", basename(fastqF))
 samples<- gsub("s\\d+-", "\\1", basename(samples)) ##For Pool 1
 samples<- gsub("-", "_", basename(samples))
 
-                                        #Quality plots of the reads
-#pdf("fig/quality/qualityProfileF1_1_2.pdf", height = 7, width = 7)
+#Quality plots of the reads
+#pdf("fig/quality/qualityProfileF1_1_1.pdf", height = 7, width = 7)
 #plotQualityProfile(fastqF[[1]])
 #dev.off()
-#pdf("fig/quality/qualityProfileR1_1_2.pdf", height = 7, width = 7)
+
+#pdf("fig/quality/qualityProfileR1_1_1.pdf", height = 7, width = 7)
 #plotQualityProfile(fastqR[[1]])
 #dev.off()
+
 #Creation of a folder for filtrated reads
-filt_path <- "tmp/Wild/filtered1_2"
+filt_path <- "tmp/Wild/filtered1_1"
 
 #Pipeline filtration of pair-end reads
 if(!file_test("-d", filt_path)) dir.create(filt_path)
@@ -52,29 +57,35 @@ names(filtRs) <- samples
 if(doFilter){
     lapply(seq_along(fastqF),  function (i) {
         filterAndTrim(fastqF[i], filtFs[i], fastqR[i], filtRs[i],
-                      minLen=c(200,200),
+#                      truncLen=c(260,230),
+                      minLen=c(200, 200),
                       maxN=0, maxEE=2, truncQ=2,
                       compress=TRUE, verbose=TRUE)
     })
 }
 
 names(filtFs) <- names(filtRs) <- samples
+
 files <- PairedReadFileSet(filtFs, filtRs)
 
 #Preparation of primer file ### Here stats the Multiamplicon pipeline from Emanuel
 #Primers used in the arrays
+
 ptable <- read.csv(file = "data/Wild/primer_list.csv", sep=",", header=TRUE, stringsAsFactors=FALSE)
 primerF <- ptable[, "Seq_F"]
 primerR <- ptable[, "Seq_R"]
 names(primerF) <- as.character(ptable[, "Name_F"])
 names(primerR) <- as.character(ptable[, "Name_R"])
+
 primer <- PrimerPairsSet(primerF, primerR)
+
 
 ##Multi amplicon pipeline
 #We start by sorting our amplicons by primer sequences cutting off the latter from sequencing reads. The directory for sorted amplicons must be empty before that.
+
 if(doMultiAmp){
     MA <- MultiAmplicon(primer, files)
-    filedir <- "tmp/Wild/stratified_files_1_2/"
+    filedir <- "tmp/Wild/stratified_files_1_1"
     if(dir.exists(filedir)) unlink(filedir, recursive=TRUE)
     MA <- sortAmplicons(MA, n=1e+05, filedir=filedir) ## This step sort the reads into amplicons based on the number of primer pairs
     errF <-  learnErrors(unlist(getStratifiedFilesF(MA)), nbase=1e8,
@@ -89,13 +100,17 @@ if(doMultiAmp){
     table(propMerged<0.8)
     MA <- makeSequenceTableMulti(MA, mc.cores=90)
     MA <- removeChimeraMulti(MA, mc.cores=90)
-    saveRDS(MA, "tmp/Wild/MA1_2.RDS")
+    saveRDS(MA, "tmp/interData/MA1_1.RDS")
 } else{
-    MA <- readRDS("tmp/Wild/MA1_2.RDS")
+    MA <- readRDS("tmp/Wild/MA1_1.RDS")
 }
 
-#trackingF <- getPipelineSummary(MA)
+# breaking in devel branch
+#trackingF <-getPipelineSummary(MA)
 #PipSum <- plotPipelineSummary(trackingF)+scale_y_log10() 
+#ggsave("Sequencing_summary_HMHZ_1_1.pdf", PipSum, path = "fig/quality/", height = 15, width = 15)
+
+
 #plotErrors(errF, nominalQ=TRUE)
 #plotErrors(errR, nominalQ=TRUE)
 #plotAmpliconNumbers(MA)
@@ -107,24 +122,25 @@ primer@names==p.df$Primer_name
 taxT1 <- list()
 seqs <- getSequencesFromTable(MA)
 seqs <- lapply(seqs, DNAStringSet)
+
 for (i in 1:48){
     if (p.df$Gen[i]=="16S"){
         try(taxT1[[i]] <- assignTaxonomy(seqs[[i]],
-          "/SAN/Susanas_den/AmpMarkers/RESCRIPt/SSURef_NR99/Fastas/Slv138.dada2.fa",
+                "/SAN/Susanas_den/AmpMarkers/RESCRIPt/SSURef_NR99/Fastas/Slv138.dada2.fa",
           multithread=90,
                                     tryRC = TRUE,
                                    verbose=TRUE))
     }
     else if (p.df$Gen[i]=="18S"){
         try(taxT1[[i]] <- assignTaxonomy(seqs[[i]],
-                 "/SAN/Susanas_den/AmpMarkers/RESCRIPt/SSURef_NR99/Fastas/Slv138.dada2.fa",
+                                         "/SAN/Susanas_den/AmpMarkers/RESCRIPt/SSURef_NR99/Fastas/Slv138.dada2.fa",
                                      multithread=90,
                                     tryRC = TRUE,
                                     verbose=TRUE))
     }
     else if (p.df$Gen[i]=="28S"){
         try(taxT1[[i]] <- assignTaxonomy(seqs[[i]],
-                      "/SAN/Susanas_den/AmpMarkers/RESCRIPt/LSURef_NR99/Fastas/Slv138LSU.dada2.fa",
+                                         "/SAN/Susanas_den/AmpMarkers/RESCRIPt/LSURef_NR99/Fastas/Slv138LSU.dada2.fa",
                                      multithread=90,
                                     tryRC = TRUE,
                                     verbose=TRUE))
@@ -147,23 +163,24 @@ for (i in 1:48){
 
 MA@taxonTable <- taxT1
 
-saveRDS(MA, file="tmp/Wild/MA1_2Tax.Rds")
-##Start from here after the taxonomic annotation
-#MA<- readRDS(file= "/SAN/Susanas_den/gitProj/HMHZ/tmp/interData/MA1_2Tax.Rds") ###Test run
+saveRDS(MA, file="tmp/Wild/MA1_1Tax.Rds")
 
 ##To phyloseq
-PS <- TMPtoPhyloseq(MA, colnames(MA)) ##Now it work
+#PS <- toPhyloseq(MA, colnames(MA)) ##it's broken
+source("R/toPhyloseq.R")
+
+PS <- TMPtoPhyloseq(MA, colnames(MA))
+PS.l <- TMPtoPhyloseq(MA, colnames(MA),  multi2Single=FALSE) ##It work
 #
 ############# add metadata
 ###Load sample information
-source("R/Wild_2_LoadingSOTA.R")
+source("R/Wild_metadata.R")
 #
 meta <- sota[match(rownames(PS@sam_data), sota$Mouse_ID),] 
 #
 nrow(meta)
-#
 #sanity checks
-rownames(PS@otu_table)[!rownames(PS@otu_table)==rownames(meta)]
+rownames(PS@otu_table)==rownames(meta)
 #
 PS@sam_data <- sample_data(meta)
 #
@@ -172,11 +189,10 @@ PS@sam_data <- sample_data(meta)
 #
 rownames(PS@sam_data) <- rownames(PS@otu_table)
 #
-# another sanity check
+                                        # another sanity check
 sample_names(PS)==rownames(PS@sam_data)
 #
 PS_neg <- subset_samples(PS, grepl("NE",rownames(PS@otu_table)))   
-#
 PS@sam_data$Control <- FALSE
 PS@sam_data$Control[which(sample_names(PS)%in%sample_names(PS_neg))] <- TRUE
 # sanity check
@@ -190,13 +206,13 @@ library("decontam")
 ## assuming that negative controls have 0 DNA
 PS@sam_data$Concentration[PS@sam_data$Control==TRUE] <- 0.0001
 #
-#
 ## ----see-depths---------------------------------------------------------------
 #df <- as.data.frame(sample_data(PS)) # Put sample_data into a ggplot-friendly data.frame
 #df$LibrarySize <- sample_sums(PS)
 #df <- df[order(df$LibrarySize),]
 #df$Index <- seq(nrow(df))
 #ggplot(data=df, aes(x=Index, y=LibrarySize, color=Control)) + geom_point()
+#
 ps <- phyloseq::prune_samples(sample_sums(PS)>0, PS)
 #
 contamdf.freq <- isContaminant(ps, method="either", conc="Concentration", neg="Control", threshold=c(0.1,0.5), normalize=TRUE)
@@ -221,22 +237,25 @@ Keep <- rownames(contamdf.freq[contamdf.freq$contaminant==FALSE,])
 PS <- prune_samples(sample_data(PS)$Control == FALSE, PS)
 PS <- prune_taxa(Keep, PS)
 #
-saveRDS(PS, file="tmp/Wild/PhyloSeqCombi_HMHZ_1_2.Rds") ###Results from preliminary analysis (Sample data)
+saveRDS(PS, file="tmp/Wild/PhyloSeqCombi_HMHZ_1_1.Rds") ###Results from preliminary analysis (Sample data)
 #
 sum(otu_table(PS)) ##Total denoised reads
-
+#
 ##Primer data
 PS.l <- TMPtoPhyloseq(MA, colnames(MA),  multi2Single=FALSE) ##It work
 ## adding metadata, removing contaminants and controls
+#
 neg <- sample_names(subset_samples(PS.l[[1]], !grepl("NE",rownames(PS.l[[1]]@otu_table))))
+#
 for (i in 1:48) {
     try(PS.l[[i]] <- prune_taxa(Keep, PS.l[[i]]), silent=TRUE)
     try(PS.l[[i]] <- prune_samples(neg, PS.l[[i]]), silent=TRUE)
 }
+#
 for (i in 1:48) {
     try(PS.l[[i]]@sam_data <- PS@sam_data, silent=TRUE)
 }
 ###For primer analysis (Victor)
-saveRDS(PS.l, file="tmp/Wild/PhyloSeqList_HMHZ_1_2.Rds") ###Full run Pool 2
-
-rownames(PS.l[[1]]@otu_table)
+saveRDS(PS.l, file="tmp/Wild/PhyloSeqList_HMHZ_1_1.Rds") ###Full run Pool 1
+###
+#lapply(getTaxonTable(MAsample), function (x) table(as.vector(x[, "phylum"])))

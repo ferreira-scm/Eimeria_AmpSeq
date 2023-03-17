@@ -1,10 +1,10 @@
-#library(dada2)
-#library(DECIPHER)
-#library(phangorn)
-#library(ShortRead)
-#library(treeio)
-#library(ape)
-
+library(dada2)
+library(DECIPHER)
+library(phangorn)
+library(ShortRead)
+library(treeio)
+library(ape)
+source("R/1_Lab_filter.R")
 
 ################## now the alignments
 ############################
@@ -33,7 +33,7 @@ names(eim.DB)
 refEim <- readDNAStringSet("/SAN/Susanas_den/AmpMarkers/wildEimeria18S/Eim_ref.fa")
 names(refEim) <- gsub("(\\s)", "_", names(refEim))
 
-#gotta correct here
+#gotta correct here, was wrongly annotated
 which(names(refEim)=="MH751946.1_Eimeria_vermiformis")
 names(refEim)[22] <- "MH751946.1_Eimeria_ferrisi"
 

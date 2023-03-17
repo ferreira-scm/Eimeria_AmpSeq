@@ -337,17 +337,10 @@ saveRDS(MA2, "tmp/Lab/MATax_FullRun_1_NewTax.Rds")
 }
 
 ### Add sample information
-if(!exists("sample.data")){
-    source("R/Lab_1_Data_preparation.R")
-}
-
-if(!exists("sdt")){
-    source("R/Lab_2_qPCR_data_preparation.R")
-}
+sdt <- read.csv("data/Lab/Lab_metadata.csv")
 
 #little fix
 rownames(sdt) <- sdt$labels
-rownames(sdt)==rownames(sample.data)
 
 ##To phyloseq, there's a bug in the current version of MA devel, so I have this workaround.
 source("R/toPhyloseq.R")

@@ -8,14 +8,62 @@ library(phyloseq)
 library(cowplot)
 library(microshades)
 library("ggpmisc")
-
-source("R/Lab_5_filtering.R")
+source("R/1_Lab_filter.R")
 
 ############################################
 ##############################################
 
 #### sensitivity, specificity, positive predicted value and negative predictive value
 #### for MA
+sensit <- function(Eim_nf){
+# GC- Eim -
+    tneg <- summary(sample_sums(Eim_nf@otu_table)==0&Eim_nf@sam_data$Genome_copies_gFaeces==0)[[3]]
+
+# GC+ Eim -
+    fneg <- summary(sample_sums(Eim_nf@otu_table)==0&Eim_nf@sam_data$Genome_copies_gFaeces>0)[[3]]
+
+# GC+ Eim+
+    tpos <- summary(sample_sums(Eim_nf@otu_table)>0&Eim_nf@sam_data$Genome_copies_gFaeces>0)[[3]]
+
+# GC- Eim+
+    fpos <- try(summary(sample_sums(Eim_nf@otu_table)>0&Eim_nf@sam_data$Genome_copies_gFaeces==0)[[3]])
+
+    if (class(fpos)=="try-error"){
+        fpos <- "0"
+    }
+print(paste("false positives:", fpos,sep=" "))
+print(paste("false negatives:", fneg,sep=" "))
+
+
+# GC+ GC-
+gcpos <- summary(Eim_nf@sam_data$Genome_copies_gFaeces==0)[[2]]
+gcneg <- summary(Eim_nf@sam_data$Genome_copies_gFaeces==0)[[3]]
+
+# Eim + Eim -
+epos <- summary(sample_sums(Eim_nf@otu_table)==0)[[2]]
+eneg <- summary(sample_sums(Eim_nf@otu_table)==0)[[3]]
+
+e.s <- matrix(as.numeric(c(tneg, fpos, fneg, tpos)), ncol=2, byrow=TRUE)
+colnames(e.s) <- c("Eim-","Eim+")
+rownames(e.s) <- c("GC-", "GC+")
+margin1 <- margin.table(e.s, margin=1)
+margin2 <- margin.table(e.s, margin=2)
+
+#sensitivity
+print("Sensitivity:")
+print(e.s[2,2]/margin1[2]*100)
+#specificity
+print("Specificity:")
+print(e.s[1,1]/margin1[1]*100)
+#ppv
+print("positive predictive value")
+print(e.s[2,2]/margin2[2]*100)
+#npv
+print("negative predictive value")
+print(e.s[1,1]/margin2[1]*100)
+}
+
+
 sensit(Eim)
 
 MA.asv1 <- prune_taxa(rownames(tax_table(Eim2))[1], Eim)
@@ -65,7 +113,7 @@ a <- ggplot(df, aes(y=logGC, x=logFilEimeriaSums))+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
     ggtitle("No normalization: ASV read counts")+
-    annotate(geom="text", x=min(df$logFilEimeriaSums), y=max(df$logGC), hjust=0.05, label=paste("Spearman rho=", round(a.cor$estimate, 2), ", p<0.001, ", "df= ", a.cor$parameter, sep=""))+
+    annotate(geom="text", x=min(df$logFilEimeriaSums), y=max(df$logGC), hjust=0.05, label=paste("Pearson's rho=", round(a.cor$estimate, 2), ", p<0.001, ", "df= ", a.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
     theme(axis.title.x = element_text(vjust = 0, size = 12),
           axis.title.y = element_text(vjust = 2, size = 12),
@@ -92,7 +140,7 @@ b <- ggplot(df, aes(y=logGC, x=logTSS_Eim))+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
     ggtitle("Total sum scaling")+
-    annotate(geom="text", x=min(df$logTSS_Eim), y=max(df$logGC), hjust=0.05, label=paste("Spearman rho=", round(b.cor$estimate, 2), ", p<0.001, ", "df= ", b.cor$parameter, sep=""))+
+    annotate(geom="text", x=min(df$logTSS_Eim), y=max(df$logGC), hjust=0.05, label=paste("Pearson's rho=", round(b.cor$estimate, 2), ", p<0.001, ", "df= ", b.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
     theme(axis.title.x = element_text(vjust = 0, size = 12),
           axis.title.y = element_text(vjust = 2, size = 12),
@@ -128,7 +176,7 @@ c <- ggplot(df, aes(y=logGC, x=logTMM))+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
     ggtitle("Trimmed mean by M-values")+
-    annotate(geom="text", x=min(df$logTMM), y=max(df$logGC), hjust=0.05, label=paste("Spearman rho=", round(c.cor$estimate, 2), ", p<0.001, ", "df= ", c.cor$parameter, sep=""))+
+    annotate(geom="text", x=min(df$logTMM), y=max(df$logGC), hjust=0.05, label=paste("Pearson's rho=", round(c.cor$estimate, 2), ", p<0.001, ", "df= ", c.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
     theme(axis.title.x = element_text(vjust = 0, size = 12),
           axis.title.y = element_text(vjust = 2, size = 12),
@@ -158,7 +206,7 @@ d <- ggplot(df, aes(y=logGC, x=clr_Eim))+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
     ggtitle("Centered log ratio")+
-    annotate(geom="text", x=min(df$clr_Eim), y=max(df$logGC), hjust=0.05, label=paste("Spearman rho=", round(d.cor$estimate, 2), ", p<0.001, ", "df= ", d.cor$parameter, sep=""))+
+    annotate(geom="text", x=min(df$clr_Eim), y=max(df$logGC), hjust=0.05, label=paste("Pearson's rho=", round(d.cor$estimate, 2), ", p<0.001, ", "df= ", d.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
     theme(axis.title.x = element_text(vjust = 0, size = 12),
           axis.title.y = element_text(vjust = 2, size = 12),
@@ -191,7 +239,7 @@ e <- ggplot(df.e, aes(y=logGC, x=logEim_rare))+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
     ggtitle("Rarefied read counts")+
-    annotate(geom="text", x=min(df.e$logEim_rare), y=max(df.e$logGC), hjust=0.05, label=paste("Spearman rho=", round(e.cor$estimate, 2), ", p<0.001, ", "df= ", e.cor$parameter, sep=""))+
+    annotate(geom="text", x=min(df.e$logEim_rare), y=max(df.e$logGC), hjust=0.05, label=paste("Pearson's rho=", round(e.cor$estimate, 2), ", p<0.001, ", "df= ", e.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
     theme(axis.title.x = element_text(vjust = 0, size = 12),
           axis.title.y = element_text(vjust = 2, size = 12),
@@ -263,7 +311,7 @@ a <- ggplot(df, aes(y=logGC, x=logFilEimeriaSums))+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
     ggtitle("No normalization: ASV read counts")+
-    annotate(geom="text", x=min(df$logFilEimeriaSums), y=max(df$logGC), hjust=0.05, label=paste("Spearman rho=", round(a.cor$estimate, 2), ", p<0.001, ", "df= ", a.cor$parameter, sep=""))+
+    annotate(geom="text", x=min(df$logFilEimeriaSums), y=max(df$logGC), hjust=0.05, label=paste("Pearson's rho=", round(a.cor$estimate, 2), ", p<0.001, ", "df= ", a.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
     theme(axis.title.x = element_text(vjust = 0, size = 12),
           axis.title.y = element_text(vjust = 2, size = 12),
@@ -290,7 +338,7 @@ b <- ggplot(df, aes(y=logGC, x=logTSS_Eim))+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
     ggtitle("Total sum scaling")+
-    annotate(geom="text", x=min(df$logTSS_Eim), y=max(df$logGC), hjust=0.05, label=paste("Spearman rho=", round(b.cor$estimate, 2), ", p<0.001, ", "df= ", b.cor$parameter, sep=""))+
+    annotate(geom="text", x=min(df$logTSS_Eim), y=max(df$logGC), hjust=0.05, label=paste("Pearson's rho=", round(b.cor$estimate, 2), ", p<0.001, ", "df= ", b.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
     theme(axis.title.x = element_text(vjust = 0, size = 12),
           axis.title.y = element_text(vjust = 2, size = 12),
@@ -323,7 +371,7 @@ c <- ggplot(df, aes(y=logGC, x=logTMM))+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
     ggtitle("Trimmed mean by M-values")+
-    annotate(geom="text", x=min(df$logTMM), y=max(df$logGC), hjust=0.05, label=paste("Spearman rho=", round(c.cor$estimate, 2), ", p<0.001, ", "df= ", c.cor$parameter, sep=""))+
+    annotate(geom="text", x=min(df$logTMM), y=max(df$logGC), hjust=0.05, label=paste("Pearson's rho=", round(c.cor$estimate, 2), ", p<0.001, ", "df= ", c.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
     theme(axis.title.x = element_text(vjust = 0, size = 12),
           axis.title.y = element_text(vjust = 2, size = 12),
@@ -353,7 +401,7 @@ d <- ggplot(df, aes(y=logGC, x=clr_Eim))+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
     ggtitle("Centered log ratio")+
-    annotate(geom="text", x=min(df$clr_Eim), y=max(df$logGC), hjust=0.05, label=paste("Spearman rho=", round(d.cor$estimate, 2), ", p<0.001, ", "df= ", d.cor$parameter, sep=""))+
+    annotate(geom="text", x=min(df$clr_Eim), y=max(df$logGC), hjust=0.05, label=paste("Pearson's rho=", round(d.cor$estimate, 2), ", p<0.001, ", "df= ", d.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
     theme(axis.title.x = element_text(vjust = 0, size = 12),
           axis.title.y = element_text(vjust = 2, size = 12),
@@ -389,7 +437,7 @@ e <- ggplot(df.e, aes(y=logGC, x=logEim_rare))+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
     ggtitle("Rarefied read counts")+
-    annotate(geom="text", x=min(df.e$logEim_rare), y=max(df.e$logGC), hjust=0.05, label=paste("Spearman rho=", round(e.cor$estimate, 2), ", p<0.001, ", "df= ", e.cor$parameter, sep=""))+
+    annotate(geom="text", x=min(df.e$logEim_rare), y=max(df.e$logGC), hjust=0.05, label=paste("Pearson's rho=", round(e.cor$estimate, 2), ", p<0.001, ", "df= ", e.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
     theme(axis.title.x = element_text(vjust = 0, size = 12),
           axis.title.y = element_text(vjust = 2, size = 12),
@@ -404,7 +452,7 @@ legend <- get_legend(a+
           guides(fill=guide_legend(nrow=3, byrow=TRUE))+
           theme(legend.position="top"))
 
-fCor <-plot_grid(a, b, c, d, e,legend,
+fCor <-cowplot::plot_grid(a, b, c, d, e,legend,
               align="vh",
               labels=c("a", "b", "c", "d", "e"),
               nrow=3)

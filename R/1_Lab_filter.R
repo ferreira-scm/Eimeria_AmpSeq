@@ -15,7 +15,21 @@ library(RColorBrewer)
 library(dplyr)
 ## using the devel
 #devtools::load_all("/SAN/Susanas_den/MultiAmplicon/")
-source("R/PlottingCor.R")
+fil <- function(ps){
+    x = phyloseq::taxa_sums(ps)
+    # abundance filtering at 0.005%
+    keepTaxa = (x / sum(x) > 0.00005)
+#    keepTaxa = (x / sum(x) > 0.0005)
+    summary(keepTaxa)
+    ps = phyloseq::prune_taxa(keepTaxa, ps)
+# plus prevalnce filter at 1%
+    KeepTaxap <- microbiome::prevalence(ps)>0.01
+    ps <- phyloseq::prune_taxa(KeepTaxap, ps)
+# subset samples based on total read count (500 reads)
+#ps <- phyloseq::subset_samples(ps, phyloseq::sample_sums(ps) > 500)
+    ps <- phyloseq::prune_samples(sample_sums(ps)>100, ps)
+    ps
+}
 
 ## Microfluidics PCR multiple amplicons
 all.PS.l.slv <- readRDS("tmp/Lab/PhyloSeqList_All_Tax_New.Rds")

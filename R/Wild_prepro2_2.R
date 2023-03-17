@@ -159,7 +159,7 @@ saveRDS(MA, file="tmp/Wild/MA2_2Tax.Rds") #
 #MA<- readRDS(file= "tmp/Wild/MA2_2Tax.Rds") ###Test run
 ##To phyloseq
 PS <- TMPtoPhyloseq(MA, colnames(MA)) ##Now it work
-source("R/Wild_2_LoadingSOTA.R")
+source("R/Wild_metadata.R")
 
 meta <- sota[match(rownames(PS@sam_data), sota$Mouse_ID),] 
 nrow(meta)

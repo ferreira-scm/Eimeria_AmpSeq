@@ -157,7 +157,7 @@ saveRDS(MA, file="tmp/Wild/MA2_1Tax.Rds") #
 PS <- TMPtoPhyloseq(MA, colnames(MA)) ##Now it work
 ############# add metadata
 ###Load sample information
-source("R/Wild_2_LoadingSOTA.R")
+source("R/Wild_metadata.R")
 ### eh we need to adjust rownames
 sample_names(PS) <- gsub("S\\d*_", "", rownames(PS@otu_table))   
 # sanity check

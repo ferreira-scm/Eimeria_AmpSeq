@@ -102,19 +102,9 @@ if(doMultiAmp){
 ## plotPipelineSummary(trackingF) + scale_y_log10()
 
 ### Add sample information
-if(!exists("sample.data")){
-    source("R/Lab_1_Data_preparation.R")
-}
-
-
-if(!exists("sdt")){
-    source("R/Lab_2_qPCR_data_preparation.R")
-}
-
+sdt <- read.csv("data/Lab/Lab_metadata.csv")
 #little fix
 rownames(sdt) <- sdt$labels
-rownames(sdt)==rownames(sample.data)
-
 
 ################################################################################################
 ################ New taxonomic annotation
@@ -154,7 +144,6 @@ PS@tax_table[,7]
 #there's 2 samples without metadata
 rownames(PS@sam_data)[rownames(PS@sam_data)%in%rownames(sdt)==FALSE]
 
-rownames(PS@sam_data)%in%rownames(sample.data)
 rownames(sdt)[rownames(sdt)%in%rownames(PS@sam_data)==FALSE]
 
 PS <- subset_samples(PS, rownames(PS@sam_data)%in%rownames(sdt))
