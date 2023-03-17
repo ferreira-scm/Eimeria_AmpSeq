@@ -1,15 +1,14 @@
 # Eimeria species
-source("R/Wild_8_AssignEim_tree_cor.R")
+source("R/5_Wild_Eimeria_spp_assignment.R")
 
 library(cowplot)
 
 ######### Preparing phyloseq objects for plotting and so on
-Eim.Tw@tax_table[,6] <- "Eimeria"
-Eim_sp <- tax_glom(Eim.Tw, "Species")
+Eim.TSSw@tax_table[,6] <- "Eimeria"
+Eim_sp <- tax_glom(Eim.TSSw, "Species")
 
 amp_names <- gsub("_ASV.*", "", names18S)
 Eim.TSSw@tax_table[,6] <- amp_names
-Eim.Tw@tax_table[,6] <- amp_names
 
 # separating Eimeria ASV's by gene
 Eim.T18 <- Eim.Tw
@@ -257,9 +256,9 @@ Eimdf <- as.data.frame(Eimdf)
 class(Eimdf) <- "data.frame"
 
 
-dis <- phyloseq::distance(Eim_sp, method="bray", type="samples")
+dis <- phyloseq::distance(Eim_sp, method="jaccard", type="samples")
 
-dis2 <- phyloseq::distance(prune_samples(rownames(Eimdf[!is.na(Eimdf$BMI),]), Eim_sp), method="bray", type="samples")
+dis2 <- phyloseq::distance(prune_samples(rownames(Eimdf[!is.na(Eimdf$BMI),]), Eim_sp), method="jaccard", type="samples")
 
 Eimdf1 <- Eimdf[!is.na(Eimdf$BMI),]
 
@@ -273,23 +272,6 @@ permaPS=adonis2(dis2~
             permutations = 1000, method = "bray")
 
 permaPS
-
-#plotting PCOA
-dis_pcoa <- cmdscale(dis, eig=TRUE, add=TRUE)
-positions <- dis_pcoa$points
-colnames(positions) <- c("axis1", "axis2")
-percent_explained <- 100*dis_pcoa$eig/sum(dis_pcoa$eig)
-pretty_pe <- format(round(percent_explained, digits=1), nsmall=1, trim=TRUE)
-library(glue)
-labels <- c(glue("PCo Axis 1 ({pretty_pe[1]}%)"), glue("PCo Axis 2({pretty_pe[2]}%)"))
-# sanity check            
-rownames(positions)==sample_names(Eim_sp)
-positions <- as.data.frame(positions)
-
-#ggplot(positions, aes(x=axis1, y=axis2))+
-#    geom_point()+
-#    labs(x=labels[1],y=labels[2])
-
 
 library(merTools)
 library(MuMIn)

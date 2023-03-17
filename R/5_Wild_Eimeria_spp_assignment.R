@@ -198,13 +198,9 @@ amplicon <- amplicon[-grep("Lab", amplicon$names_ASVs),]
 
 #sanity check
 Eim@tax_table[,7] <- amplicon$species
-Eim.TSS@tax_table[,7] <- amplicon$species
-Eim.T@tax_table[,7] <- amplicon$species
-
 Eim.TSSw@tax_table[,7] <- amplicon$species
-Eim.Tw@tax_table[,7] <- amplicon$species
 
-get_taxa_unique(Eim.Tw, "Species")
+get_taxa_unique(Eim.TSSw, "Species") # looks good
 
 #########################################################
 # correlation matrix and network
@@ -214,13 +210,10 @@ library(igraph)
 
 # removing empty samples
 Eim <- phyloseq::prune_samples(sample_sums(Eim)>0, Eim)
-Eim.TSS <- phyloseq::prune_samples(sample_sums(Eim.TSS)>0, Eim.TSS)
-Eim.T <- phyloseq::prune_samples(sample_sums(Eim.T)>0, Eim.T)
 Eim.TSSw <- phyloseq::prune_samples(sample_sums(Eim.TSSw)>0, Eim.TSSw)
-Eim.Tw <- phyloseq::prune_samples(sample_sums(Eim.Tw)>0, Eim.Tw)
 
-eim <- (Eim.Tw@otu_table)
-tax <- data.frame(Eim.Tw@tax_table) 
+eim <- (Eim.TSSw@otu_table)
+tax <- data.frame(Eim.TSSw@tax_table) 
 
 otu.cor <- rcorr(as.matrix(eim), type="spearman")
 otu.pval <- forceSymmetric(otu.cor$P)
@@ -251,14 +244,14 @@ V(net.grph)
 summary(adjm<0)
 ### colour negative edges
 E(net.grph)$weight
-E(net.grph)$color <- "dodgerblue4"
-E(net.grph)$color[which(E(net.grph)$weight<0)] <- "#FF00FF"
+E(net.grph)$color <- "darkcyan"
+E(net.grph)$color[which(E(net.grph)$weight<0)] <- "firebrick"
 E(net.grph)$color
 
 # we also want the node color to code for amplicon
 amp <- as.factor(gsub("_ASV_[0-9]", "", names18S))
 nb.col <- length(levels(amp))
-coul <- colorRampPalette(brewer.pal(8, "Accent"))(nb.col)
+coul <- colorRampPalette(brewer.pal(8, "Set3"))(nb.col)
 mc <- coul[as.numeric(amp)]
 
 # sanity check
@@ -276,9 +269,11 @@ plot(net.grph,
      vertex.label=amplicon$species,
 #     edge.width=as.integer(cut(E(net.grph)$weight, breaks=6))/2,
      edge.width=E(net.grph)$weight*3,
+     edge.alpha=0.1,
      vertex.color=adjustcolor(mc, 0.8),
      vertex.size=amplicon$BS/10,
      frame.col="grey")
+
 dev.off()
 
 # the modules now
@@ -295,10 +290,7 @@ amplicon$species_FINAL[amplicon$species=="vermiformis"] <- "vermiformis"
 
 # assigning species
 Eim@tax_table[,7] <- amplicon$species_FINAL
-Eim.T@tax_table[,7] <- amplicon$species_FINAL
-Eim.TSS@tax_table[,7] <- amplicon$species_FINAL
-Eim.Tw@tax_table[,7] <- amplicon$species_FINAL
 Eim.TSSw@tax_table[,7] <- amplicon$species_FINAL
 
 ## save Eim phyloseq object
-saveRDS(Eim, "tmp/Wild/EimeriaSpeciesAssign.RDS")
+saveRDS(Eim, "tmp/Wild/EimeriaSpeciesAssign.RDS")# why am I doing this?
