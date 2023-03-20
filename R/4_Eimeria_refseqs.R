@@ -39,7 +39,8 @@ names(refEim)[22] <- "MH751946.1_Eimeria_ferrisi"
 
 names(seqs2) <- c("Lab_single-multi-amplicon_ASV1", "Lab_single-multi-amplicon_ASV2", "Lab_single-amplicon_ASV3", "Lab_single-amplicon_ASV4")
 
-allSeqs <- c(eim.DB, Eim.f, refEim, seqs2)
+allSeqs <- c(eim.DB, Eim.f, refEim)
 
-writeFasta(allSeqs, "tmp/Eimeria_seqs.fa")
+writeFasta(seqs2, "tmp/Lab_ASVs.fa")
+writeFasta(allSeqs, "tmp/Eimeria_reference.fa")
 

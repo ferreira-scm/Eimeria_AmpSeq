@@ -8,6 +8,11 @@ library(magrittr)
 library(BiocManager)
 library(lmerTest)
 library(lme4)
+library(cowplot)
+library(microshades)
+library(ggpmisc)
+library(MuMIn)
+
 source("R/1_Lab_filter.R")
 
 # Do ASV match beween MA and SA?
@@ -34,8 +39,6 @@ MA.e$ASV <- "ASV"
 MA.e$ASV[which(MA.e$OTU==colnames(Eim@otu_table)[2])] <- "ASV2"
 MA.e$ASV[which(MA.e$OTU==colnames(Eim@otu_table)[1])] <- "ASV1"
 
-SA.e4 <- SA.e[which(SA.e$OTU==colnames(Eim2@otu_table)[4]),]
-SA.e3 <- SA.e[which(SA.e$OTU==colnames(Eim2@otu_table)[3]),]
 SA.e2 <- SA.e[which(SA.e$OTU==colnames(Eim2@otu_table)[2]),]
 SA.e1 <- SA.e[which(SA.e$OTU==colnames(Eim2@otu_table)[1]),]
 
@@ -120,15 +123,10 @@ sd(MA.FP, na.rm=TRUE)
 ################ Plotting
 ## defining colour for dpi
 coul <- c(microshades_palette("micro_purple", 4, lightest=FALSE), microshades_palette("micro_orange", 3, lightest=FALSE), microshades_palette("micro_brown", 3, lightest=FALSE))
-
 coul2 <- coul[-1]
 
 # plotting with abundance and prevalence filter correlation
-
 cor.sa <- cor.test(log(SA.e.g0$Abundance), log(SA.e.g0$Genome_copies_ng), method="pearson")
-
-cor.sa
-
 plot_SA_all <- ggplot(SA.e.g0, aes(x=log(Abundance), y=log(Genome_copies_ngDNA)))+
     geom_point(shape=21, size=2.5, aes(fill= dpi), color= "white", alpha=0.8)+
     scale_fill_manual(values=coul)+
@@ -143,13 +141,11 @@ plot_SA_all <- ggplot(SA.e.g0, aes(x=log(Abundance), y=log(Genome_copies_ngDNA))
           plot.title=element_text(face="bold",
                                   margin=margin(10,0,10,0),
                                   size=12))
-plot_SA_all
 
 ASV.col <-  c("dodgerblue4",
               "darkolivegreen4",
               "darkorchid3",
                "goldenrod1")
-
 ASV_ab <- ggplot(SA.e, aes(x=Abundance, y=ASV))+
     geom_jitter( position=position_jitter(height=0.2), shape=21, size=2.5, aes(fill= ASV), color= "white", alpha=0.7)+
     scale_fill_manual(values=ASV.col)+
@@ -171,25 +167,6 @@ Figure2 <- cowplot::plot_grid(plot_SA_all, ASV_ab, nrow=2, labels="auto")
 ggplot2::ggsave("fig/Figure2.pdf", Figure2, width = 6, height = 8, dpi = 300)
 ggplot2::ggsave("fig/Figure2.png", Figure2, width = 6, height = 8, dpi = 300)
 
-
-#          legend.position= "none")
-plot_MA_all <-ggplot(MA.e.g0, aes(x=log(Abundance), y=log(Genome_copies_ngDNA)))+
-        geom_point(shape=21, size=2.5, aes(fill= dpi), color= "white", alpha=0.8)+
-    scale_fill_manual(values=coul2)+
-    ylab("Eimeria genome copies (log)")+
-    xlab("Eimeria ASV abundance (log)")+
-    ggtitle("Microfluidics PCR Eimeria quantification")+
-#    annotate(geom="text", x=min(log(MA.e.g0$Abundance)), y=max(log(MA.e.g0$Genome_copies_ngDNA)), hjust=0.05, label="Conditional R2=0.79")+
-    theme_bw(base_size=10)+
-    theme(axis.title.x = element_text(vjust = 0, size = 12),
-          axis.title.y = element_text(vjust = 2, size = 12),
-          plot.title=element_text(face="bold",
-                                  margin=margin(10,0,10,0),
-                                  size=12),
-    legend.position= "none")
-
-plot_MA_all
-
 ############### Do all ASVs explain Eimeria genome copies?
 ################ preparing dataset for regressions
 # removeing zeros from qPCR
@@ -201,16 +178,13 @@ Eim.0 = phyloseq::prune_samples(Eim@sam_data$Genome_copies_ngDNA>0, Eim)
 
 SA.df <- data.frame(Eim2.0@sam_data$Genome_copies_ngDNA, Eim2.0@otu_table[,1], Eim2.0@otu_table[,2],Eim2.0@otu_table[,3],Eim2.0@otu_table[,4],Eim2.0@sam_data$dpi, Eim2.0@sam_data$EH_ID)
 names(SA.df) <- c("Genome_copies", "ASV1", "ASV2", "ASV3", "ASV4", "dpi", "EH_ID")
-
 SA.df$TotalE <- SA.df$ASV1+SA.df$ASV2+SA.df$ASV3+SA.df$ASV4
 SA.df <- SA.df[SA.df$TotalE>0,]
 nrow(SA.df)
-
 lmm.sa <- lmer(data=SA.df, log(Genome_copies)~log(1+ASV1)+log(1+ASV2)+log(1+ASV3)+log(1+ASV4)+ (1|dpi))
 lmm.sa0 <- lmer(data=SA.df, log(Genome_copies)~1+ (1|dpi))
 
 ranova(lmm.sa)
-
 summary(lmm.sa)
 
 # calculating r-squared following Nakagawa and Schielzeth 2012
@@ -228,30 +202,17 @@ VarF/(VarF + VarCorr(lmm.sa)$dpi[1] + attr(VarCorr(lmm.sa), "sc")^2)
 (VarF + VarCorr(lmm.sa)$dpi[1])/(VarF + VarCorr(lmm.sa)$dpi[1] + (attr(VarCorr(lmm.sa), "sc")^2))
 
 ### or we do it with a package...
-library(MuMIn)
 r.squaredGLMM(lmm.sa) ## well, that was easy
 
 #plot(lmm.sa)
 anova(lmm.sa, test="LRT")
 anova(lmm.sa, lmm.sa0)
 
-# saving model results
-sink("fig/Eimeira_asv_SA.txt")
-summary(lmm.sa)
-sink()
-
 ## plotting estimated random effects for each dpi and its interval estimate
-library(merTools)
-plotREsim(REsim(lmm.sa))
-confint(lmm.sa)
-
-library(sjPlot)
-sjPlot::plot_model(lmm.sa)
-
-## is using negative binomial better than transforming?
-gau.m.0.nb <- glmer.nb(data=SA.df, Genome_copies~ASV1+ASV2+ASV3+ASV4+(1|dpi))
-summary(gau.m.0.nb)
-
+#library(merTools)
+#plotREsim(REsim(lmm.sa))
+#library(sjPlot)
+#sjPlot::plot_model(lmm.sa)
 
 #### for multiamplicon
 MA.df <- data.frame(Eim.0@sam_data$Genome_copies_ngDNA, Eim.0@otu_table[,1], Eim.0@otu_table[,2],Eim.0@sam_data$dpi)
@@ -264,19 +225,12 @@ lmm.ma <- lmer(data=MA.df, log(Genome_copies)~log(1+ASV1)+log(1+ASV2)+(1|dpi))
 summary(lmm.ma)
 lmm.ma0 <- lmer(data=MA.df, log(Genome_copies)~1+(1|dpi))
 
-#sink("fig/Eimeira_asv_MA.txt")
-#print(summary(lmm.ma))
-#sink()
-
 # LR tests for significance
 anova(lmm.ma, test="LRT")
-
 anova(lmm.ma, lmm.ma0)
-
 ranova(lmm.ma)
 
 ## marginal and conditional r2
-library(MuMIn)
 r.squaredGLMM(lmm.ma)
 
 #### Plot by EH_ID, only positive animals
@@ -334,7 +288,6 @@ MA2 <- ggplot(MA.e2, aes(x=dpi, y=log(1+Abundance)))+
                                   size=12),
           legend.position="none")
 
-
 MA1 <- ggplot(MA.e1, aes(x=dpi, y=log(1+Abundance)))+
     geom_point(shape=21, size=2.5, aes(fill= dpi), color= "white", alpha=0.7)+
     scale_fill_manual(values=col)+
@@ -351,8 +304,6 @@ MA1 <- ggplot(MA.e1, aes(x=dpi, y=log(1+Abundance)))+
                                   margin=margin(10,0,10,0),
                                   size=12),
           legend.position="none")
-
-MA2
 
 FigureS3 <-cowplot::plot_grid(SA1, SA2, MA1, MA2,
               align="vh",
@@ -384,8 +335,6 @@ ASV1.c <-ggplot(ma.sa[ma.sa$ASV=="ASV1",], aes(x=Abundance.x, y=Abundance.y))+
     theme(axis.title.x = element_text(vjust = 0, size = 12),
           axis.title.y = element_text(vjust = 2, size = 12))
 
-library(ggpmisc)
-
 ASV2.c <-ggplot(ma.sa[ma.sa$ASV=="ASV2",], aes(x=Abundance.x, y=Abundance.y))+
     geom_point(colour="gray40", alpha=0.7)+
 #    scale_fill_manual(values=c("#009E73", "mediumvioletred"), name="")+
@@ -399,17 +348,10 @@ ASV2.c <-ggplot(ma.sa[ma.sa$ASV=="ASV2",], aes(x=Abundance.x, y=Abundance.y))+
     theme(axis.title.x = element_text(vjust = 0, size = 12),
           axis.title.y = element_text(vjust = 2, size = 12))
 
-ASV2.c
-
-ASV1.c
-
 Fig1 <- plot_grid(ASV1.c, ASV2.c, labels="auto", nrow=1, align="hv")
-
 Fig1
 
 ggplot2::ggsave(file="fig/Figure1.pdf", Fig1, width = 8, height = 4, dpi = 300)
 ggplot2::ggsave(file="fig/Figure1.png", Fig1, width = 8, height = 4, dpi = 300)
-
-################################
 
 

@@ -192,8 +192,6 @@ amplicon$BS[amplicon$names_ASVs=="Proti15_25_F.Proti440R_28_R_ASV_2"] <- 52
 amplicon2 <- amplicon
 
 # removing lab ASVs
-amplicon
-
 amplicon <- amplicon[-grep("Lab", amplicon$names_ASVs),]
 
 #sanity check
@@ -236,6 +234,7 @@ p.yes.rr <- p.yes.r.str*r.val # use logical vector for subscripting.
 adjm <- as.matrix(p.yes.r)
 colnames(adjm) <- names18S
 rownames(adjm) <- names18S
+
 net.grph=graph.adjacency(adjm,mode="undirected",weighted=TRUE,diag=FALSE) 
 
 V(net.grph)
@@ -244,19 +243,29 @@ V(net.grph)
 summary(adjm<0)
 ### colour negative edges
 E(net.grph)$weight
-E(net.grph)$color <- "darkcyan"
+E(net.grph)$color <- "darkseagreen"
 E(net.grph)$color[which(E(net.grph)$weight<0)] <- "firebrick"
 E(net.grph)$color
 
 # we also want the node color to code for amplicon
-amp <- as.factor(gsub("_ASV_[0-9]", "", names18S))
-nb.col <- length(levels(amp))
-coul <- colorRampPalette(brewer.pal(8, "Set3"))(nb.col)
-mc <- coul[as.numeric(amp)]
+#amp <- as.factor(gsub("_ASV_[0-9]", "", names18S))
+#nb.col <- length(levels(amp))
+#coul <- colorRampPalette(brewer.pal(8, "Set3"))(nb.col)
+#mc <- coul[as.numeric(amp)]
+
+V(net.grph)$colour <- "black"
+V(net.grph)$colour[V(net.grph)$species=="ferrisi"] <- "darkgoldenrod2"
+V(net.grph)$colour[V(net.grph)$species=="falciformis"] <- "darkolivegreen"
+V(net.grph)$colour[V(net.grph)$species=="vermiformis"] <- "cornflowerblue"
+V(net.grph)$colour[V(net.grph)$species=="Unknown"] <- "deeppink4"
+
+
+
+#V(net.grph)$shape <- "circle"
 
 # sanity check
 names(V(net.grph))==amplicon$names_ASVs
-amplicon$BS <- as.numeric(amplicon$BS)
+#amplicon$BS <- as.numeric(amplicon$BS)
 
 E(net.grph)$weight <- abs(E(net.grph)$weight)
 
@@ -264,16 +273,25 @@ E(net.grph)$weight <- abs(E(net.grph)$weight)
 pdf("fig/Figure4_Eimeria_ASVs_Network.pdf",
                 width =15, height = 15)
 
+V(net.grph)$species <- amplicon$species
+V(net.grph)$species[V(net.grph)$species=="28S"] <- "Unknown"
+V(net.grph)$species[V(net.grph)$species=="sp"] <- "Unknown"
+
+taxa_sums(Eim.TSSw)
+
+pdf("fig/Figure4.pdf",
+                width =8, height = 8)
 set.seed(1113)
 plot(net.grph,
-     vertex.label=amplicon$species,
+     vertex.label="",
 #     edge.width=as.integer(cut(E(net.grph)$weight, breaks=6))/2,
-     edge.width=E(net.grph)$weight*3,
-     edge.alpha=0.1,
-     vertex.color=adjustcolor(mc, 0.8),
-     vertex.size=amplicon$BS/10,
+     edge.width=E(net.grph)$weight,
+      edge.alpha=0.1,
+     edge.color=adjustcolor(E(net.grph)$color, 0.4),
+     vertex.color=adjustcolor(V(net.grph)$colour, 0.8),
+     vertex.size=as.vector(taxa_sums(Eim.TSSw))+3,
      frame.col="grey")
-
+legend(x=1, y=1, legend=c("E. ferrisi", "E. falciformis", "E. vermiformis", "Unknown"), col=c("darkgoldenrod2","darkolivegreen","cornflowerblue","deeppink4"), bty = "n", pch=20 , pt.cex = 3)
 dev.off()
 
 # the modules now

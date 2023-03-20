@@ -114,12 +114,8 @@ for (i in 2:length(fPS.lTSSw)){
 #    print(fPS)
     }
 
-#fPS.TSS <- transform_sample_counts(fPS, function(x) x / sum(x)) to erase
-
 Eim <- subset_taxa(fPS, Genus%in%"g__Eimeria")
 Eim <- prune_taxa(taxa_sums(Eim)>0, Eim)
-#Eim.TSS <- subset_taxa(fPS.TSS, Genus%in%"g__Eimeria") # to erase
-#Eim.TSS <- prune_taxa(taxa_sums(Eim.TSS)>0, Eim.TSS)
 
 Eim.TSSw <- subset_taxa(fPSTSSw, Genus%in%"g__Eimeria")
 Eim.TSSw <- prune_taxa(taxa_sums(Eim.TSSw)>0, Eim.TSSw)
