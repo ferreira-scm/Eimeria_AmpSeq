@@ -1,0 +1,584 @@
+IQ-TREE 2.2.0 COVID-edition built Jun  1 2022
+
+Input file name: tmp/amplicon_alignments/Refamplicon9
+Type of analysis: tree reconstruction + ultrafast bootstrap (5000 replicates)
+Random seed number: 948902
+
+REFERENCES
+----------
+
+To cite IQ-TREE please use:
+
+Bui Quang Minh, Heiko A. Schmidt, Olga Chernomor, Dominik Schrempf,
+Michael D. Woodhams, Arndt von Haeseler, and Robert Lanfear (2020)
+IQ-TREE 2: New models and efficient methods for phylogenetic inference
+in the genomic era. Mol. Biol. Evol., in press.
+https://doi.org/10.1093/molbev/msaa015
+
+Since you used ultrafast bootstrap (UFBoot) please also cite: 
+
+Diep Thi Hoang, Olga Chernomor, Arndt von Haeseler, Bui Quang Minh,
+and Le Sy Vinh (2018) UFBoot2: Improving the ultrafast bootstrap
+approximation. Mol. Biol. Evol., 35:518–522.
+https://doi.org/10.1093/molbev/msx281
+
+SEQUENCE ALIGNMENT
+------------------
+
+Input data: 121 sequences with 1554 nucleotide sites
+Number of constant sites: 1444 (= 92.9215% of all sites)
+Number of invariant (constant or ambiguous constant) sites: 1444 (= 92.9215% of all sites)
+Number of parsimony informative sites: 46
+Number of distinct site patterns: 439
+
+SUBSTITUTION PROCESS
+--------------------
+
+Model of substitution: TN+F+R2
+
+Rate parameter R:
+
+  A-C: 1.0000
+  A-G: 1.0672
+  A-T: 1.0000
+  C-G: 1.0000
+  C-T: 3.1646
+  G-T: 1.0000
+
+State frequencies: (empirical counts from alignment)
+
+  pi(A) = 0.2518
+  pi(C) = 0.1956
+  pi(G) = 0.2693
+  pi(T) = 0.2833
+
+Rate matrix Q:
+
+  A   -0.7705    0.1967     0.289    0.2848
+  C    0.2531    -1.425    0.2708    0.9013
+  G    0.2701    0.1967   -0.7516    0.2848
+  T    0.2531    0.6225    0.2708    -1.146
+
+Model of rate heterogeneity: FreeRate with 2 categories
+Site proportion and rates:  (0.8578,0.3415) (0.1422,4.971)
+
+ Category  Relative_rate  Proportion
+  1         0.3415         0.8578
+  2         4.971          0.1422
+
+MAXIMUM LIKELIHOOD TREE
+-----------------------
+
+Log-likelihood of the tree: -3024.1883 (s.e. 77.1934)
+Unconstrained log-likelihood (without tree): -8030.3615
+Number of free parameters (#branches + #model parameters): 232
+Akaike information criterion (AIC) score: 6512.3766
+Corrected Akaike information criterion (AICc) score: 6594.2176
+Bayesian information criterion (BIC) score: 7753.2489
+
+Total tree length (sum of branch lengths): 0.1206
+Sum of internal branch lengths: 0.0741 (61.4576% of tree length)
+
+WARNING: 89 near-zero internal branches (<0.0006) should be treated with caution
+         Such branches are denoted by '**' in the figure below
+
+NOTE: Tree is UNROOTED although outgroup taxon 'Proti15_25_F.Proti440R_28_R_ASV_1' is drawn at root
+Numbers in parentheses are  ultrafast bootstrap support (%)
+
++**Proti15_25_F.Proti440R_28_R_ASV_1
+|
+|           +**Proti15_25_F.Proti440R_28_R_ASV_2
+|        +**| (72)
+|        |  |                                            +**MH751934.1_Eimeria_falciformis
+|        |  |                                         +**| (63)
+|        |  |                                         |  |     +--MH751943.1_Eimeria_falciformis
+|        |  |                                         |  |  +**| (52)
+|        |  |                                         |  |  |  |  +---MH751976.1_Eimeria_falciformis
+|        |  |                                         |  |  |  +--| (77)
+|        |  |                                         |  |  |     +**MH751980.1_Eimeria_falciformis
+|        |  |                                         |  +**| (54)
+|        |  |                                         |     +**MH751964.1_Eimeria_falciformis
+|        |  |                                      +**| (68)
+|        |  |                                      |  +**MH751998.1_Eimeria_falciformis
+|        |  |                                   +**| (63)
+|        |  |                                   |  +**MH751981.1_Eimeria_falciformis
+|        |  |                                +**| (69)
+|        |  |                                |  +--MH752016.1_Eimeria_falciformis
+|        |  |                             +**| (66)
+|        |  |                             |  +**MH751978.1_Eimeria_falciformis
+|        |  |                          +**| (61)
+|        |  |                          |  +**MH752019.1_Eimeria_falciformis
+|        |  |                       +--| (72)
+|        |  |                       |  +--MH752011.1_Eimeria_falciformis
+|        |  |                    +**| (44)
+|        |  |                    |  +--MH751975.1_Eimeria_falciformis
+|        |  |                 +**| (38)
+|        |  |                 |  +**MH751937.1_Eimeria_falciformis
+|        |  |              +**| (49)
+|        |  |              |  +**MH751941.1_Eimeria_falciformis
+|        |  |           +**| (57)
+|        |  |           |  +**MH752018.1_Eimeria_falciformis
+|        |  |        +**| (88)
+|        |  |        |  +**MH751942.1_Eimeria_falciformis
+|        |  |     +**| (51)
+|        |  |     |  +**MH752017.1_Eimeria_falciformis
+|        |  |  +**| (55)
+|        |  |  |  +**MH751960.1_Eimeria_falciformis
+|        |  +--| (85)
+|        |     +**MH752012.1_Eimeria_falciformis
+|  +-----| (90)
+|  |     |              +**MH751926.1_Eimeria_vermiformis
+|  |     |           +**| (26)
+|  |     |           |  |     +**MH751940.1_Eimeria_vermiformis
+|  |     |           |  |  +**| (98)
+|  |     |           |  |  |  +**MH751948.1_Eimeria_vermiformis
+|  |     |           |  +**| (53)
+|  |     |           |     +**MH751974.1_Eimeria_vermiformis
+|  |     |        +--| (71)
+|  |     |        |  +**MH751951.1_Eimeria_vermiformis
+|  |     |     +**| (36)
+|  |     |     |  |  +**MH751977.1_Eimeria_vermiformis
+|  |     |     |  +**| (48)
+|  |     |     |     +--MH752030.1_Eimeria_vermiformis
+|  |     |  +**| (43)
+|  |     |  |  +**MH751957.1_Eimeria_vermiformis
+|  |     +--| (76)
+|  |        +**MH752003.1_Eimeria_vermiformis
++**| (70)
+|  |                                     +------JQ993669_Isospora_sp._ex_Talpa_europaea
+|  +-------------------------------------| (100)
+|                                        |  +-----------------JQ993671_Isospora_sp._ex_Talpa_europaea
+|                                        +--| (89)
+|                                           +--JQ993670_Isospora_sp._ex_Talpa_europaea
+|
+|                                                             +**MH751925.1_Eimeria_ferrisi
+|                                                          +**| (45)
+|                                                          |  |        +**MH751945.1_Eimeria_ferrisi
+|                                                          |  |     +**| (60)
+|                                                          |  |     |  |     +**MH751954.1_Eimeria_ferrisi
+|                                                          |  |     |  |  +**| (53)
+|                                                          |  |     |  |  |  |        +**MH751970.1_Eimeria_ferrisi
+|                                                          |  |     |  |  |  |     +**| (47)
+|                                                          |  |     |  |  |  |     |  |                                 +--wang1141_13_F.Nem_0425_6_3_R_wang1141_13_F.Nem_0425_6_3_R_Lab_standard-fluidic-PCR_ASV2
+|                                                          |  |     |  |  |  |     |  +---------------------------------| (100)
+|                                                          |  |     |  |  |  |     |                                    +--wang1141_13_F.Nem_0425_6_3_R_wang1141_13_F.Nem_0425_6_3_R_Lab_standard-PCR_ASV3
+|                                                          |  |     |  |  |  |  +**| (42)
+|                                                          |  |     |  |  |  |  |  +**wang1141_13_F.Nem_0425_6_3_R_wang1141_13_F.Nem_0425_6_3_R_Lab_standard-PCR_ASV4
+|                                                          |  |     |  |  |  +**| (58)
+|                                                          |  |     |  |  |     +**wang1141_13_F.Nem_0425_6_3_R_wang1141_13_F.Nem_0425_6_3_R_Lab_standard-fluidic-PCR_ASV1
+|                                                          |  |     |  +**| (56)
+|                                                          |  |     |     +**MH752034.1_Eimeria_ferrisi
+|                                                          |  |  +**| (6)
+|                                                          |  |  |  +**MH751993.1_Eimeria_ferrisi
+|                                                          |  +**| (51)
+|                                                          |     +**MH751962.1_Eimeria_ferrisi
+|                                                       +**| (46)
+|                                                       |  +**MH751986.1_Eimeria_ferrisi
+|                                                    +**| (14)
+|                                                    |  +**MH751985.1_Eimeria_ferrisi
+|                                                 +**| (10)
+|                                                 |  +**MH751983.1_Eimeria_ferrisi
+|                                              +**| (12)
+|                                              |  |                                                +**MH751929.1_Eimeria_ferrisi
+|                                              |  |                                             +**| (4)
+|                                              |  |                                             |  |           +**MH751950.1_Eimeria_ferrisi
+|                                              |  |                                             |  |        +--| (61)
+|                                              |  |                                             |  |        |  +**MH751953.1_Eimeria_ferrisi
+|                                              |  |                                             |  |     +**| (14)
+|                                              |  |                                             |  |     |  +**MH752026.1_Eimeria_ferrisi
+|                                              |  |                                             |  |  +**| (9)
+|                                              |  |                                             |  |  |  +**MH751969.1_Eimeria_ferrisi
+|                                              |  |                                             |  +--| (18)
+|                                              |  |                                             |     +**MH751997.1_Eimeria_ferrisi
+|                                              |  |                                          +**| (5)
+|                                              |  |                                          |  +**MH751930.1_Eimeria_ferrisi
+|                                              |  |                                       +**| (3)
+|                                              |  |                                       |  +**MH751961.1_Eimeria_ferrisi
+|                                              |  |                                    +**| (7)
+|                                              |  |                                    |  +**MH751935.1_Eimeria_ferrisi
+|                                              |  |                                 +**| (18)
+|                                              |  |                                 |  +**MH751968.1_Eimeria_ferrisi
+|                                              |  |                              +**| (70)
+|                                              |  |                              |  +**MH751967.1_Eimeria_ferrisi
+|                                              |  |                           +**| (61)
+|                                              |  |                           |  +**MH751972.1_Eimeria_ferrisi
+|                                              |  |                        +**| (60)
+|                                              |  |                        |  +**MH751965.1_Eimeria_ferrisi
+|                                              |  |                     +**| (57)
+|                                              |  |                     |  +**MH751955.1_Eimeria_ferrisi
+|                                              |  |                  +**| (47)
+|                                              |  |                  |  |                 +**MH751932.1_Eimeria_ferrisi
+|                                              |  |                  |  |              +**| (63)
+|                                              |  |                  |  |              |  |  +**MH751958.1_Eimeria_ferrisi
+|                                              |  |                  |  |              |  +**| (58)
+|                                              |  |                  |  |              |     |    +**MH752002.1_Eimeria_ferrisi
+|                                              |  |                  |  |              |     +----| (94)
+|                                              |  |                  |  |              |          +**MH752020.1_Eimeria_ferrisi
+|                                              |  |                  |  |           +**| (68)
+|                                              |  |                  |  |           |  +**MH752007.1_Eimeria_ferrisi
+|                                              |  |                  |  |        +**| (61)
+|                                              |  |                  |  |        |  +**MH751992.1_Eimeria_ferrisi
+|                                              |  |                  |  |     +**| (56)
+|                                              |  |                  |  |     |  +**MH752035.1_Eimeria_ferrisi
+|                                              |  |                  |  |  +**| (62)
+|                                              |  |                  |  |  |  +**MH751994.1_Eimeria_ferrisi
+|                                              |  |                  |  +--| (64)
+|                                              |  |                  |     +**MH751988.1_Eimeria_ferrisi
+|                                              |  |               +--| (65)
+|                                              |  |               |  |  +**MH751949.1_Eimeria_ferrisi
+|                                              |  |               |  +**| (70)
+|                                              |  |               |     +**MH751982.1_Eimeria_ferrisi
+|                                              |  |            +**| (11)
+|                                              |  |            |  +**MH752036.1_Eimeria_ferrisi
+|                                              |  |         +**| (7)
+|                                              |  |         |  +**MH752032.1_Eimeria_ferrisi
+|                                              |  |      +**| (8)
+|                                              |  |      |  +**MH751939.1_Eimeria_ferrisi
+|                                              |  +------| (9)
+|                                              |         |                    +**MH751938.1_Eimeria_ferrisi
+|                                              |         |                 +**| (0)
+|                                              |         |                 |  |  +**MH751966.1_Eimeria_ferrisi
+|                                              |         |                 |  +**| (0)
+|                                              |         |                 |     |  +**MH751984.1_Eimeria_ferrisi
+|                                              |         |                 |     +**| (0)
+|                                              |         |                 |        |     +**MH752008.1_Eimeria_ferrisi
+|                                              |         |                 |        |  +**| (67)
+|                                              |         |                 |        |  |  +**MH752025.1_Eimeria_ferrisi
+|                                              |         |                 |        +**| (58)
+|                                              |         |                 |           +**MH752028.1_Eimeria_ferrisi
+|                                              |         |              +**| (0)
+|                                              |         |              |  +**MH751959.1_Eimeria_ferrisi
+|                                              |         |           +**| (0)
+|                                              |         |           |  +**MH751995.1_Eimeria_ferrisi
+|                                              |         |        +**| (0)
+|                                              |         |        |  +**MH751989.1_Eimeria_ferrisi
+|                                              |         |     +**| (0)
+|                                              |         |     |  +**MH751996.1_Eimeria_ferrisi
+|                                              |         |  +**| (0)
+|                                              |         |  |  +**MH752033.1_Eimeria_ferrisi
+|                                              |         +**| (0)
+|                                              |            +**MH752029.1_Eimeria_ferrisi
+|                                           +**| (14)
+|                                           |  +**MH751979.1_Eimeria_ferrisi
+|                                        +**| (10)
+|                                        |  +**MH752004.1_Eimeria_ferrisi
+|                                     +**| (25)
+|                                     |  +--MH752000.1_Eimeria_ferrisi
+|                                  +**| (1)
+|                                  |  +**MH752014.1_Eimeria_ferrisi
+|                               +**| (2)
+|                               |  +**MH752013.1_Eimeria_ferrisi
+|                            +**| (10)
+|                            |  +**MH752009.1_Eimeria_ferrisi
+|                         +**| (24)
+|                         |  +**MH752015.1_Eimeria_ferrisi
+|                      +**| (30)
+|                      |  +**MH752005.1_Eimeria_ferrisi
+|                   +**| (36)
+|                   |  +**MH752006.1_Eimeria_ferrisi
+|                +**| (47)
+|                |  +**MH751963.1_Eimeria_ferrisi
+|             +--| (47)
+|             |  |     +**MH751999.1_Eimeria_ferrisi
+|             |  |  +--| (76)
+|             |  |  |  +--MH752023.1_Eimeria_ferrisi
+|             |  +**| (57)
+|             |     |   +--MH752010.1_Eimeria_ferrisi
+|             |     +---| (30)
+|             |         +**MH752027.1_Eimeria_ferrisi
+|          +**| (12)
+|          |  |  +**MH751927.1_Eimeria_ferrisi
+|          |  +**| (22)
+|          |     |     +--MH751933.1_Eimeria_ferrisi
+|          |     |  +**| (33)
+|          |     |  |  +--MH752022.1_Eimeria_ferrisi
+|          |     +**| (13)
+|          |        +**MH751944.1_Eimeria_ferrisi
+|       +--| (64)
+|       |  |           +**MH751928.1_Eimeria_ferrisi
+|       |  |        +**| (24)
+|       |  |        |  |  +--MH751936.1_Eimeria_ferrisi
+|       |  |        |  +**| (32)
+|       |  |        |     |  +----MH752021.1_Eimeria_ferrisi
+|       |  |        |     +--| (90)
+|       |  |        |        +**MH752031.1_Eimeria_ferrisi
+|       |  |     +**| (26)
+|       |  |     |  +**MH752024.1_Eimeria_ferrisi
+|       |  |  +**| (23)
+|       |  |  |  +**MH751987.1_Eimeria_ferrisi
+|       |  +**| (17)
+|       |     +**MH751991.1_Eimeria_ferrisi
+|  +----| (90)
+|  |    +**MH751947.1_Eimeria_ferrisi
++--| (70)
+   +**MH751946.1_Eimeria_ferrisi
+
+Tree in newick format:
+
+(Proti15_25_F.Proti440R_28_R_ASV_1:0.0000023678,(((Proti15_25_F.Proti440R_28_R_ASV_2:0.0000009964,(((((((((((((((MH751934.1_Eimeria_falciformis:0.0000009964,((MH751943.1_Eimeria_falciformis:0.0009806246,(MH751976.1_Eimeria_falciformis:0.0027581251,MH751980.1_Eimeria_falciformis:0.0000020152)77:0.0016083932)52:0.0000022657,MH751964.1_Eimeria_falciformis:0.0000009964)54:0.0000009964)63:0.0000025732,MH751998.1_Eimeria_falciformis:0.0000009964)68:0.0000025417,MH751981.1_Eimeria_falciformis:0.0000009964)63:0.0000009964,MH752016.1_Eimeria_falciformis:0.0015875887)69:0.0000009964,MH751978.1_Eimeria_falciformis:0.0000009964)66:0.0000009964,MH752019.1_Eimeria_falciformis:0.0000009964)61:0.0000009964,MH752011.1_Eimeria_falciformis:0.0014512191)72:0.0007384818,MH751975.1_Eimeria_falciformis:0.0010677165)44:0.0000029340,MH751937.1_Eimeria_falciformis:0.0000009964)38:0.0000012915,MH751941.1_Eimeria_falciformis:0.0000009964)49:0.0000010213,MH752018.1_Eimeria_falciformis:0.0000009964)57:0.0000010295,MH751942.1_Eimeria_falciformis:0.0000009964)88:0.0000010235,MH752017.1_Eimeria_falciformis:0.0000009964)51:0.0000012188,MH751960.1_Eimeria_falciformis:0.0000009964)55:0.0000009964,MH752012.1_Eimeria_falciformis:0.0000009964)85:0.0015015752)72:0.0000020582,(((((MH751926.1_Eimeria_vermiformis:0.0000009964,((MH751940.1_Eimeria_vermiformis:0.0000009964,MH751948.1_Eimeria_vermiformis:0.0000009964)98:0.0000030836,MH751974.1_Eimeria_vermiformis:0.0000009964)53:0.0000024425)26:0.0000012090,MH751951.1_Eimeria_vermiformis:0.0000009964)71:0.0007604960,(MH751977.1_Eimeria_vermiformis:0.0000009964,MH752030.1_Eimeria_vermiformis:0.0008142133)48:0.0000024708)36:0.0000023816,MH751957.1_Eimeria_vermiformis:0.0000009964)43:0.0000009964,MH752003.1_Eimeria_vermiformis:0.0000009964)76:0.0007228347)90:0.0036529569,(JQ993669_Isospora_sp._ex_Talpa_europaea:0.0043621766,(JQ993671_Isospora_sp._ex_Talpa_europaea:0.0110240215,JQ993670_Isospora_sp._ex_Talpa_europaea:0.0023387804)89:0.0015702012)100:0.0229805784)70:0.0000027719,((((((((((((((((((((MH751925.1_Eimeria_ferrisi:0.0000009964,(((MH751945.1_Eimeria_ferrisi:0.0000009964,((MH751954.1_Eimeria_ferrisi:0.0000009964,(((MH751970.1_Eimeria_ferrisi:0.0005593209,(wang1141_13_F.Nem_0425_6_3_R_wang1141_13_F.Nem_0425_6_3_R_Lab_standard-fluidic-PCR_ASV2:0.0019741591,wang1141_13_F.Nem_0425_6_3_R_wang1141_13_F.Nem_0425_6_3_R_Lab_standard-PCR_ASV3:0.0019795203)100:0.0203735370)47:0.0000011249,wang1141_13_F.Nem_0425_6_3_R_wang1141_13_F.Nem_0425_6_3_R_Lab_standard-PCR_ASV4:0.0000009964)42:0.0000022156,wang1141_13_F.Nem_0425_6_3_R_wang1141_13_F.Nem_0425_6_3_R_Lab_standard-fluidic-PCR_ASV1:0.0000009964)58:0.0000021047)53:0.0000016951,MH752034.1_Eimeria_ferrisi:0.0000009964)56:0.0000019044)60:0.0000010250,MH751993.1_Eimeria_ferrisi:0.0000009964)6:0.0000027425,MH751962.1_Eimeria_ferrisi:0.0000009964)51:0.0000010118)45:0.0000020303,MH751986.1_Eimeria_ferrisi:0.0000009964)46:0.0001639931,MH751985.1_Eimeria_ferrisi:0.0000009964)14:0.0000021589,MH751983.1_Eimeria_ferrisi:0.0000009964)10:0.0000023655,(((((((((((((((MH751929.1_Eimeria_ferrisi:0.0000009964,((((MH751950.1_Eimeria_ferrisi:0.0000020153,MH751953.1_Eimeria_ferrisi:0.0000021133)61:0.0011682336,MH752026.1_Eimeria_ferrisi:0.0000009964)14:0.0000022459,MH751969.1_Eimeria_ferrisi:0.0000009964)9:0.0000023092,MH751997.1_Eimeria_ferrisi:0.0000025707)18:0.0021053689)4:0.0000010064,MH751930.1_Eimeria_ferrisi:0.0000009964)5:0.0000011198,MH751961.1_Eimeria_ferrisi:0.0000009964)3:0.0000029442,MH751935.1_Eimeria_ferrisi:0.0000009964)7:0.0000026749,MH751968.1_Eimeria_ferrisi:0.0000009964)18:0.0000028758,MH751967.1_Eimeria_ferrisi:0.0000009964)70:0.0000029356,MH751972.1_Eimeria_ferrisi:0.0000009964)61:0.0000009964,MH751965.1_Eimeria_ferrisi:0.0000009964)60:0.0000009964,MH751955.1_Eimeria_ferrisi:0.0000009964)57:0.0000020299,((((((MH751932.1_Eimeria_ferrisi:0.0000009964,(MH751958.1_Eimeria_ferrisi:0.0000009964,(MH752002.1_Eimeria_ferrisi:0.0000021145,MH752020.1_Eimeria_ferrisi:0.0000022367)94:0.0032607082)58:0.0000009964)63:0.0000023662,MH752007.1_Eimeria_ferrisi:0.0000009964)68:0.0000009964,MH751992.1_Eimeria_ferrisi:0.0000009964)61:0.0000009964,MH752035.1_Eimeria_ferrisi:0.0000009964)56:0.0000009964,MH751994.1_Eimeria_ferrisi:0.0000009964)62:0.0000009964,MH751988.1_Eimeria_ferrisi:0.0000009964)64:0.0007650609)47:0.0000009964,(MH751949.1_Eimeria_ferrisi:0.0000009964,MH751982.1_Eimeria_ferrisi:0.0000009964)70:0.0000009964)65:0.0007521700,MH752036.1_Eimeria_ferrisi:0.0000009964)11:0.0000011586,MH752032.1_Eimeria_ferrisi:0.0000009964)7:0.0000010156,MH751939.1_Eimeria_ferrisi:0.0000009964)8:0.0000029332,(((((((MH751938.1_Eimeria_ferrisi:0.0000009964,(MH751966.1_Eimeria_ferrisi:0.0000009964,(MH751984.1_Eimeria_ferrisi:0.0000009964,((MH752008.1_Eimeria_ferrisi:0.0000024550,MH752025.1_Eimeria_ferrisi:0.0000023708)67:0.0000027438,MH752028.1_Eimeria_ferrisi:0.0000009964)58:0.0000022665)0:0.0000022848)0:0.0000020669)0:0.0000013119,MH751959.1_Eimeria_ferrisi:0.0000009964)0:0.0000027627,MH751995.1_Eimeria_ferrisi:0.0000009964)0:0.0000028272,MH751989.1_Eimeria_ferrisi:0.0000009964)0:0.0000022160,MH751996.1_Eimeria_ferrisi:0.0000009964)0:0.0000021458,MH752033.1_Eimeria_ferrisi:0.0000009964)0:0.0000020924,MH752029.1_Eimeria_ferrisi:0.0000009964)0:0.0000091986)9:0.0044860127)12:0.0000009964,MH751979.1_Eimeria_ferrisi:0.0000009964)14:0.0000009964,MH752004.1_Eimeria_ferrisi:0.0000009964)10:0.0000009964,MH752000.1_Eimeria_ferrisi:0.0007235814)25:0.0000009964,MH752014.1_Eimeria_ferrisi:0.0000009964)1:0.0000009964,MH752013.1_Eimeria_ferrisi:0.0000009964)2:0.0000009964,MH752009.1_Eimeria_ferrisi:0.0000009964)10:0.0000009964,MH752015.1_Eimeria_ferrisi:0.0000009964)24:0.0000009964,MH752005.1_Eimeria_ferrisi:0.0000009964)30:0.0000009964,MH752006.1_Eimeria_ferrisi:0.0000009964)36:0.0000009964,MH751963.1_Eimeria_ferrisi:0.0000009964)47:0.0000020834,((MH751999.1_Eimeria_ferrisi:0.0000023661,MH752023.1_Eimeria_ferrisi:0.0017727143)76:0.0021961677,(MH752010.1_Eimeria_ferrisi:0.0017955192,MH752027.1_Eimeria_ferrisi:0.0000017539)30:0.0026706766)57:0.0003532638)47:0.0007332579,(MH751927.1_Eimeria_ferrisi:0.0000009964,((MH751933.1_Eimeria_ferrisi:0.0009709153,MH752022.1_Eimeria_ferrisi:0.0007177458)33:0.0000017949,MH751944.1_Eimeria_ferrisi:0.0000009964)13:0.0000010260)22:0.0000366072)12:0.0000022552,((((MH751928.1_Eimeria_ferrisi:0.0000009964,(MH751936.1_Eimeria_ferrisi:0.0009750122,(MH752021.1_Eimeria_ferrisi:0.0032806988,MH752031.1_Eimeria_ferrisi:0.0000026480)90:0.0013612416)32:0.0000009964)24:0.0000009964,MH752024.1_Eimeria_ferrisi:0.0000009964)26:0.0000009964,MH751987.1_Eimeria_ferrisi:0.0000009964)23:0.0000009964,MH751991.1_Eimeria_ferrisi:0.0000009964)17:0.0000009964)64:0.0007343280,MH751947.1_Eimeria_ferrisi:0.0000025080)90:0.0032848953,MH751946.1_Eimeria_ferrisi:0.0000022026)70:0.0012045520);
+
+CONSENSUS TREE
+--------------
+
+Consensus tree is constructed from 5000 bootstrap trees
+Log-likelihood of consensus tree: -3024.359627
+Robinson-Foulds distance between ML tree and consensus tree: 80
+
+Branches with support >0.000000% are kept (extended consensus)
+Branch lengths are optimized by maximum likelihood on original alignment
+Numbers in parentheses are bootstrap supports (%)
+
++--Proti15_25_F.Proti440R_28_R_ASV_1
+|
+|           +--Proti15_25_F.Proti440R_28_R_ASV_2
+|        +--| (72)
+|        |  |                                            +--MH751934.1_Eimeria_falciformis
+|        |  |                                         +--| (63)
+|        |  |                                         |  |     +--MH751943.1_Eimeria_falciformis
+|        |  |                                         |  |  +--| (52)
+|        |  |                                         |  |  |  |  +---MH751976.1_Eimeria_falciformis
+|        |  |                                         |  |  |  +--| (77)
+|        |  |                                         |  |  |     +--MH751980.1_Eimeria_falciformis
+|        |  |                                         |  +--| (54)
+|        |  |                                         |     +--MH751964.1_Eimeria_falciformis
+|        |  |                                      +--| (68)
+|        |  |                                      |  +--MH751998.1_Eimeria_falciformis
+|        |  |                                   +--| (63)
+|        |  |                                   |  +--MH751981.1_Eimeria_falciformis
+|        |  |                                +--| (69)
+|        |  |                                |  +--MH752016.1_Eimeria_falciformis
+|        |  |                             +--| (66)
+|        |  |                             |  +--MH751978.1_Eimeria_falciformis
+|        |  |                          +--| (61)
+|        |  |                          |  +--MH752019.1_Eimeria_falciformis
+|        |  |                       +--| (72)
+|        |  |                       |  +--MH752011.1_Eimeria_falciformis
+|        |  |                    +**| (44)
+|        |  |                    |  +--MH751975.1_Eimeria_falciformis
+|        |  |                 +--| (38)
+|        |  |                 |  +--MH751937.1_Eimeria_falciformis
+|        |  |              +**| (49)
+|        |  |              |  +--MH751941.1_Eimeria_falciformis
+|        |  |           +**| (57)
+|        |  |           |  +--MH752018.1_Eimeria_falciformis
+|        |  |        +--| (88)
+|        |  |        |  +--MH751942.1_Eimeria_falciformis
+|        |  |     +--| (51)
+|        |  |     |  +--MH752017.1_Eimeria_falciformis
+|        |  |  +--| (55)
+|        |  |  |  +--MH751960.1_Eimeria_falciformis
+|        |  +--| (85)
+|        |     +--MH752012.1_Eimeria_falciformis
+|  +-----| (90)
+|  |     |              +--MH751926.1_Eimeria_vermiformis
+|  |     |           +--| (26)
+|  |     |           |  |     +--MH751940.1_Eimeria_vermiformis
+|  |     |           |  |  +--| (98)
+|  |     |           |  |  |  +--MH751948.1_Eimeria_vermiformis
+|  |     |           |  +--| (53)
+|  |     |           |     +--MH751974.1_Eimeria_vermiformis
+|  |     |        +--| (71)
+|  |     |        |  +--MH751951.1_Eimeria_vermiformis
+|  |     |     +--| (36)
+|  |     |     |  |  +--MH751977.1_Eimeria_vermiformis
+|  |     |     |  +--| (48)
+|  |     |     |     +--MH752030.1_Eimeria_vermiformis
+|  |     |  +--| (43)
+|  |     |  |  +--MH751957.1_Eimeria_vermiformis
+|  |     +--| (76)
+|  |        +--MH752003.1_Eimeria_vermiformis
++--| (70)
+|  |                                     +------JQ993669_Isospora_sp._ex_Talpa_europaea
+|  +-------------------------------------| (100)
+|                                        |  +-----------------JQ993671_Isospora_sp._ex_Talpa_europaea
+|                                        +--| (89)
+|                                           +--JQ993670_Isospora_sp._ex_Talpa_europaea
+|
+|                                           +--MH751925.1_Eimeria_ferrisi
+|                                        +--| (45)
+|                                        |  |        +--MH751945.1_Eimeria_ferrisi
+|                                        |  |     +--| (60)
+|                                        |  |     |  |     +--MH751954.1_Eimeria_ferrisi
+|                                        |  |     |  |  +--| (53)
+|                                        |  |     |  |  |  |        +--MH751970.1_Eimeria_ferrisi
+|                                        |  |     |  |  |  |     +--| (47)
+|                                        |  |     |  |  |  |     |  |                                 +--wang1141_13_F.Nem_0425_6_3_R_wang1141_13_F.Nem_0425_6_3_R_Lab_standard-fluidic-PCR_ASV2
+|                                        |  |     |  |  |  |     |  +---------------------------------| (100)
+|                                        |  |     |  |  |  |     |                                    +--wang1141_13_F.Nem_0425_6_3_R_wang1141_13_F.Nem_0425_6_3_R_Lab_standard-PCR_ASV3
+|                                        |  |     |  |  |  |  +--| (42)
+|                                        |  |     |  |  |  |  |  +--wang1141_13_F.Nem_0425_6_3_R_wang1141_13_F.Nem_0425_6_3_R_Lab_standard-PCR_ASV4
+|                                        |  |     |  |  |  +--| (58)
+|                                        |  |     |  |  |     +--wang1141_13_F.Nem_0425_6_3_R_wang1141_13_F.Nem_0425_6_3_R_Lab_standard-fluidic-PCR_ASV1
+|                                        |  |     |  +--| (56)
+|                                        |  |     |     +--MH752034.1_Eimeria_ferrisi
+|                                        |  |  +--| (61)
+|                                        |  |  |  +--MH751962.1_Eimeria_ferrisi
+|                                        |  +--| (51)
+|                                        |     +--MH751993.1_Eimeria_ferrisi
+|                                     +--| (46)
+|                                     |  +--MH751986.1_Eimeria_ferrisi
+|                                  +--| (54)
+|                                  |  +--MH751984.1_Eimeria_ferrisi
+|                               +--| (40)
+|                               |  +--MH751985.1_Eimeria_ferrisi
+|                            +--| (55)
+|                            |  +--MH751983.1_Eimeria_ferrisi
+|                         +--| (24)
+|                         |  |                                                                                          +**MH751929.1_Eimeria_ferrisi
+|                         |  |                                                                                       +**|
+|                         |  |                                                                                       |  +**MH751971.1_Eimeria_ferrisi
+|                         |  |                                                                                    +**|
+|                         |  |                                                                                    |  +**MH751990.1_Eimeria_ferrisi
+|                         |  |                                                                                 +**|
+|                         |  |                                                                                 |  +**MH751973.1_Eimeria_ferrisi
+|                         |  |                                                                              +**|
+|                         |  |                                                                              |  +**MH751931.1_Eimeria_ferrisi
+|                         |  |                                                                           +**|
+|                         |  |                                                                           |  +**MH751952.1_Eimeria_ferrisi
+|                         |  |                                                                        +**|
+|                         |  |                                                                        |  +**MH752001.1_Eimeria_ferrisi
+|                         |  |                                                                     +--|
+|                         |  |                                                                     |  +**MH751956.1_Eimeria_ferrisi
+|                         |  |                                                                  +--| (19)
+|                         |  |                                                                  |  +--MH751969.1_Eimeria_ferrisi
+|                         |  |                                                               +--| (8)
+|                         |  |                                                               |  |           +--MH751930.1_Eimeria_ferrisi
+|                         |  |                                                               |  |        +--| (18)
+|                         |  |                                                               |  |        |  |     +--MH751950.1_Eimeria_ferrisi
+|                         |  |                                                               |  |        |  |  +--| (61)
+|                         |  |                                                               |  |        |  |  |  +--MH751953.1_Eimeria_ferrisi
+|                         |  |                                                               |  |        |  +--| (22)
+|                         |  |                                                               |  |        |     +--MH751997.1_Eimeria_ferrisi
+|                         |  |                                                               |  |     +--| (10)
+|                         |  |                                                               |  |     |  +--MH752026.1_Eimeria_ferrisi
+|                         |  |                                                               |  |  +--| (6)
+|                         |  |                                                               |  |  |  +--MH751967.1_Eimeria_ferrisi
+|                         |  |                                                               |  +--| (1)
+|                         |  |                                                               |     +--MH751935.1_Eimeria_ferrisi
+|                         |  |                                                            +--| (21)
+|                         |  |                                                            |  +--MH751968.1_Eimeria_ferrisi
+|                         |  |                                                         +--| (70)
+|                         |  |                                                         |  +--MH751961.1_Eimeria_ferrisi
+|                         |  |                                                      +--| (61)
+|                         |  |                                                      |  +--MH751972.1_Eimeria_ferrisi
+|                         |  |                                                   +--| (60)
+|                         |  |                                                   |  +--MH751965.1_Eimeria_ferrisi
+|                         |  |                                                +--| (57)
+|                         |  |                                                |  +--MH751955.1_Eimeria_ferrisi
+|                         |  |                                             +--| (47)
+|                         |  |                                             |  |                 +--MH751932.1_Eimeria_ferrisi
+|                         |  |                                             |  |              +--| (63)
+|                         |  |                                             |  |              |  |  +--MH751958.1_Eimeria_ferrisi
+|                         |  |                                             |  |              |  +--| (58)
+|                         |  |                                             |  |              |     |    +--MH752002.1_Eimeria_ferrisi
+|                         |  |                                             |  |              |     +----| (94)
+|                         |  |                                             |  |              |          +--MH752020.1_Eimeria_ferrisi
+|                         |  |                                             |  |           +--| (68)
+|                         |  |                                             |  |           |  +--MH752007.1_Eimeria_ferrisi
+|                         |  |                                             |  |        +--| (61)
+|                         |  |                                             |  |        |  +--MH751992.1_Eimeria_ferrisi
+|                         |  |                                             |  |     +--| (56)
+|                         |  |                                             |  |     |  +--MH752035.1_Eimeria_ferrisi
+|                         |  |                                             |  |  +--| (62)
+|                         |  |                                             |  |  |  +--MH751994.1_Eimeria_ferrisi
+|                         |  |                                             |  +--| (64)
+|                         |  |                                             |     +--MH751988.1_Eimeria_ferrisi
+|                         |  |                                          +--| (65)
+|                         |  |                                          |  |  +--MH751949.1_Eimeria_ferrisi
+|                         |  |                                          |  +--| (70)
+|                         |  |                                          |     +--MH751982.1_Eimeria_ferrisi
+|                         |  |                                       +--| (24)
+|                         |  |                                       |  +--MH752029.1_Eimeria_ferrisi
+|                         |  |                                    +--| (25)
+|                         |  |                                    |  +--MH751939.1_Eimeria_ferrisi
+|                         |  |                                 +--| (20)
+|                         |  |                                 |  +--MH752036.1_Eimeria_ferrisi
+|                         |  |                              +--| (10)
+|                         |  |                              |  |              +--MH751959.1_Eimeria_ferrisi
+|                         |  |                              |  |           +--| (28)
+|                         |  |                              |  |           |  |  +--MH751995.1_Eimeria_ferrisi
+|                         |  |                              |  |           |  +--| (40)
+|                         |  |                              |  |           |     |     +--MH752008.1_Eimeria_ferrisi
+|                         |  |                              |  |           |     |  +--| (67)
+|                         |  |                              |  |           |     |  |  +--MH752025.1_Eimeria_ferrisi
+|                         |  |                              |  |           |     +--| (58)
+|                         |  |                              |  |           |        +--MH752028.1_Eimeria_ferrisi
+|                         |  |                              |  |        +--| (30)
+|                         |  |                              |  |        |  +--MH751966.1_Eimeria_ferrisi
+|                         |  |                              |  |     +--| (22)
+|                         |  |                              |  |     |  +--MH751996.1_Eimeria_ferrisi
+|                         |  |                              |  |  +--| (9)
+|                         |  |                              |  |  |  +--MH752033.1_Eimeria_ferrisi
+|                         |  |                              |  +--| (11)
+|                         |  |                              |     +--MH752032.1_Eimeria_ferrisi
+|                         |  |                           +--| (30)
+|                         |  |                           |  +--MH751938.1_Eimeria_ferrisi
+|                         |  |                    +------| (53)
+|                         |  |                    |      +--MH751989.1_Eimeria_ferrisi
+|                         |  |                 +--| (16)
+|                         |  |                 |  +--MH752004.1_Eimeria_ferrisi
+|                         |  |              +--| (28)
+|                         |  |              |  +--MH752000.1_Eimeria_ferrisi
+|                         |  |           +--| (24)
+|                         |  |           |  +--MH752015.1_Eimeria_ferrisi
+|                         |  |        +--| (19)
+|                         |  |        |  +--MH752009.1_Eimeria_ferrisi
+|                         |  |     +--| (12)
+|                         |  |     |  +--MH752014.1_Eimeria_ferrisi
+|                         |  |  +--| (26)
+|                         |  |  |  +--MH752013.1_Eimeria_ferrisi
+|                         |  +--| (7)
+|                         |     +--MH751979.1_Eimeria_ferrisi
+|                      +--| (30)
+|                      |  +--MH752005.1_Eimeria_ferrisi
+|                   +--| (36)
+|                   |  +--MH752006.1_Eimeria_ferrisi
+|                +--| (47)
+|                |  +--MH751963.1_Eimeria_ferrisi
+|             +--| (47)
+|             |  |        +--MH751999.1_Eimeria_ferrisi
+|             |  |     +--| (76)
+|             |  |     |  +--MH752023.1_Eimeria_ferrisi
+|             |  |  +--| (32)
+|             |  |  |  +---MH752027.1_Eimeria_ferrisi
+|             |  +--| (57)
+|             |     +--MH752010.1_Eimeria_ferrisi
+|          +--| (10)
+|          |  |  +--MH751944.1_Eimeria_ferrisi
+|          |  +--| (40)
+|          |     +--MH752022.1_Eimeria_ferrisi
+|       +--| (64)
+|       |  |                 +--MH751927.1_Eimeria_ferrisi
+|       |  |              +--| (22)
+|       |  |              |  |  +--MH751936.1_Eimeria_ferrisi
+|       |  |              |  +--| (32)
+|       |  |              |     |  +----MH752021.1_Eimeria_ferrisi
+|       |  |              |     +--| (90)
+|       |  |              |        +--MH752031.1_Eimeria_ferrisi
+|       |  |           +--| (27)
+|       |  |           |  +--MH751933.1_Eimeria_ferrisi
+|       |  |        +--| (32)
+|       |  |        |  +--MH751928.1_Eimeria_ferrisi
+|       |  |     +--| (31)
+|       |  |     |  +--MH752024.1_Eimeria_ferrisi
+|       |  |  +--| (28)
+|       |  |  |  +--MH751987.1_Eimeria_ferrisi
+|       |  +--| (20)
+|       |     +--MH751991.1_Eimeria_ferrisi
+|  +----| (90)
+|  |    +--MH751947.1_Eimeria_ferrisi
++--| (70)
+   +--MH751946.1_Eimeria_ferrisi
+
+
+Consensus tree in newick format: 
+
+(Proti15_25_F.Proti440R_28_R_ASV_1:0.0000022560,(((Proti15_25_F.Proti440R_28_R_ASV_2:0.0000022560,(((((((((((((((MH751934.1_Eimeria_falciformis:0.0000022560,((MH751943.1_Eimeria_falciformis:0.0009805299,(MH751976.1_Eimeria_falciformis:0.0027589110,MH751980.1_Eimeria_falciformis:0.0000020398)77:0.0016084431)52:0.0000022580,MH751964.1_Eimeria_falciformis:0.0000022560)54:0.0000022580)63:0.0000022580,MH751998.1_Eimeria_falciformis:0.0000022560)68:0.0000022580,MH751981.1_Eimeria_falciformis:0.0000022560)63:0.0000022560,MH752016.1_Eimeria_falciformis:0.0015881378)69:0.0000022560,MH751978.1_Eimeria_falciformis:0.0000022560)66:0.0000022560,MH752019.1_Eimeria_falciformis:0.0000022560)61:0.0000022560,MH752011.1_Eimeria_falciformis:0.0014519076)72:0.0007375087,MH751975.1_Eimeria_falciformis:0.0010684624)44:0.0000010568,MH751937.1_Eimeria_falciformis:0.0000022560)38:0.0000022580,MH751941.1_Eimeria_falciformis:0.0000022560)49:0.0000011786,MH752018.1_Eimeria_falciformis:0.0000022560)57:0.0000010053,MH751942.1_Eimeria_falciformis:0.0000022560)88:0.0000022580,MH752017.1_Eimeria_falciformis:0.0000022560)51:0.0000022560,MH751960.1_Eimeria_falciformis:0.0000022560)55:0.0000022560,MH752012.1_Eimeria_falciformis:0.0000022560)85:0.0015014805)72:0.0000028892,(((((MH751926.1_Eimeria_vermiformis:0.0000022560,((MH751940.1_Eimeria_vermiformis:0.0000022560,MH751948.1_Eimeria_vermiformis:0.0000022560)98:0.0006440565,MH751974.1_Eimeria_vermiformis:0.0000022560)53:0.0001186734)26:0.0000022560,MH751951.1_Eimeria_vermiformis:0.0000022560)71:0.0000022560,(MH751977.1_Eimeria_vermiformis:0.0000022560,MH752030.1_Eimeria_vermiformis:0.0008149618)48:0.0000022560)36:0.0000022560,MH751957.1_Eimeria_vermiformis:0.0000022560)43:0.0000022560,MH752003.1_Eimeria_vermiformis:0.0000022560)76:0.0007229051)90:0.0036546482,(JQ993669_Isospora_sp._ex_Talpa_europaea:0.0043642392,(JQ993671_Isospora_sp._ex_Talpa_europaea:0.0110343487,JQ993670_Isospora_sp._ex_Talpa_europaea:0.0023449360)89:0.0015585297)100:0.0229905608)70:0.0000020733,((((((((((((((MH751925.1_Eimeria_ferrisi:0.0000022560,(((MH751945.1_Eimeria_ferrisi:0.0000022560,((MH751954.1_Eimeria_ferrisi:0.0000022560,(((MH751970.1_Eimeria_ferrisi:0.0006440565,(wang1141_13_F.Nem_0425_6_3_R_wang1141_13_F.Nem_0425_6_3_R_Lab_standard-fluidic-PCR_ASV2:0.0017252134,wang1141_13_F.Nem_0425_6_3_R_wang1141_13_F.Nem_0425_6_3_R_Lab_standard-PCR_ASV3:0.0022482035)100:0.0203961646)47:0.0000735666,wang1141_13_F.Nem_0425_6_3_R_wang1141_13_F.Nem_0425_6_3_R_Lab_standard-PCR_ASV4:0.0000022560)42:0.0000022560,wang1141_13_F.Nem_0425_6_3_R_wang1141_13_F.Nem_0425_6_3_R_Lab_standard-fluidic-PCR_ASV1:0.0000022560)58:0.0000022560)53:0.0000022560,MH752034.1_Eimeria_ferrisi:0.0000022560)56:0.0000022560)60:0.0000022560,MH751962.1_Eimeria_ferrisi:0.0000022560)61:0.0000022560,MH751993.1_Eimeria_ferrisi:0.0000022560)51:0.0000022560)45:0.0000022560,MH751986.1_Eimeria_ferrisi:0.0000022560)46:0.0000022560,MH751984.1_Eimeria_ferrisi:0.0000022560)54:0.0000022560,MH751985.1_Eimeria_ferrisi:0.0000022560)40:0.0000022560,MH751983.1_Eimeria_ferrisi:0.0000022560)55:0.0000022560,(((((((((((((((((((((((((((((MH751929.1_Eimeria_ferrisi:0.0000000000,MH751971.1_Eimeria_ferrisi:0.0000000000):0.0000000000,MH751990.1_Eimeria_ferrisi:0.0000000000):0.0000000000,MH751973.1_Eimeria_ferrisi:0.0000000000):0.0000000000,MH751931.1_Eimeria_ferrisi:0.0000000000):0.0000000000,MH751952.1_Eimeria_ferrisi:0.0000000000):0.0000000000,MH752001.1_Eimeria_ferrisi:0.0000000000):0.0000000000,MH751956.1_Eimeria_ferrisi:0.0000000000):0.0000022560,MH751969.1_Eimeria_ferrisi:0.0000022560)19:0.0000022560,((((MH751930.1_Eimeria_ferrisi:0.0000022560,((MH751950.1_Eimeria_ferrisi:0.0000022560,MH751953.1_Eimeria_ferrisi:0.0000024750)61:0.0011725103,MH751997.1_Eimeria_ferrisi:0.0000022560)22:0.0000028892)18:0.0000028892,MH752026.1_Eimeria_ferrisi:0.0000022560)10:0.0000028892,MH751967.1_Eimeria_ferrisi:0.0000022560)6:0.0000028892,MH751935.1_Eimeria_ferrisi:0.0000022560)1:0.0000028892)8:0.0000028892,MH751968.1_Eimeria_ferrisi:0.0000022560)21:0.0000949501,MH751961.1_Eimeria_ferrisi:0.0000022560)70:0.0020086339,MH751972.1_Eimeria_ferrisi:0.0000022560)61:0.0000022560,MH751965.1_Eimeria_ferrisi:0.0000022560)60:0.0000022560,MH751955.1_Eimeria_ferrisi:0.0000022560)57:0.0000022560,((((((MH751932.1_Eimeria_ferrisi:0.0000022560,(MH751958.1_Eimeria_ferrisi:0.0000022560,(MH752002.1_Eimeria_ferrisi:0.0000026266,MH752020.1_Eimeria_ferrisi:0.0000022560)94:0.0032621738)58:0.0000022560)63:0.0000022560,MH752007.1_Eimeria_ferrisi:0.0000022560)68:0.0000022560,MH751992.1_Eimeria_ferrisi:0.0000022560)61:0.0000022560,MH752035.1_Eimeria_ferrisi:0.0000022560)56:0.0000022560,MH751994.1_Eimeria_ferrisi:0.0000022560)62:0.0000022560,MH751988.1_Eimeria_ferrisi:0.0000022560)64:0.0007654488)47:0.0000022560,(MH751949.1_Eimeria_ferrisi:0.0000022560,MH751982.1_Eimeria_ferrisi:0.0000022560)70:0.0000022560)65:0.0000022560,MH752029.1_Eimeria_ferrisi:0.0000022560)24:0.0000022560,MH751939.1_Eimeria_ferrisi:0.0000022560)25:0.0001086169,MH752036.1_Eimeria_ferrisi:0.0000022560)20:0.0006440565,(((((MH751959.1_Eimeria_ferrisi:0.0000022560,(MH751995.1_Eimeria_ferrisi:0.0000022560,((MH752008.1_Eimeria_ferrisi:0.0000028946,MH752025.1_Eimeria_ferrisi:0.0000022560)67:0.0000021062,MH752028.1_Eimeria_ferrisi:0.0000022560)58:0.0000021062)40:0.0000021062)28:0.0000021062,MH751966.1_Eimeria_ferrisi:0.0000022560)30:0.0000021062,MH751996.1_Eimeria_ferrisi:0.0000022560)22:0.0000021062,MH752033.1_Eimeria_ferrisi:0.0000022560)9:0.0000021062,MH752032.1_Eimeria_ferrisi:0.0000022560)11:0.0000021062)10:0.0000021062,MH751938.1_Eimeria_ferrisi:0.0000022560)30:0.0000021024,MH751989.1_Eimeria_ferrisi:0.0000022560)53:0.0044997058,MH752004.1_Eimeria_ferrisi:0.0000022560)16:0.0000022560,MH752000.1_Eimeria_ferrisi:0.0007239085)28:0.0000022560,MH752015.1_Eimeria_ferrisi:0.0000022560)24:0.0000022560,MH752009.1_Eimeria_ferrisi:0.0000022560)19:0.0000022560,MH752014.1_Eimeria_ferrisi:0.0000022560)12:0.0000022560,MH752013.1_Eimeria_ferrisi:0.0000022560)26:0.0000022560,MH751979.1_Eimeria_ferrisi:0.0000022560)7:0.0000022560)24:0.0000022560,MH752005.1_Eimeria_ferrisi:0.0000022560)30:0.0000022560,MH752006.1_Eimeria_ferrisi:0.0000022560)36:0.0000022560,MH751963.1_Eimeria_ferrisi:0.0000022560)47:0.0000022560,(((MH751999.1_Eimeria_ferrisi:0.0000022560,MH752023.1_Eimeria_ferrisi:0.0017756695)76:0.0021959131,MH752027.1_Eimeria_ferrisi:0.0025829199)32:0.0004425878,MH752010.1_Eimeria_ferrisi:0.0017970910)57:0.0000022607)47:0.0007335001,(MH751944.1_Eimeria_ferrisi:0.0000022560,MH752022.1_Eimeria_ferrisi:0.0006396748)40:0.0001177258)10:0.0000022580,((((((MH751927.1_Eimeria_ferrisi:0.0000022560,(MH751936.1_Eimeria_ferrisi:0.0009752473,(MH752021.1_Eimeria_ferrisi:0.0032816465,MH752031.1_Eimeria_ferrisi:0.0000022560)90:0.0013613118)32:0.0000022560)22:0.0000022560,MH751933.1_Eimeria_ferrisi:0.0009711735)27:0.0000022560,MH751928.1_Eimeria_ferrisi:0.0000022560)32:0.0000022560,MH752024.1_Eimeria_ferrisi:0.0000022560)31:0.0000022560,MH751987.1_Eimeria_ferrisi:0.0000022560)28:0.0000022560,MH751991.1_Eimeria_ferrisi:0.0000022560)20:0.0000022560)64:0.0007345607,MH751947.1_Eimeria_ferrisi:0.0000022560)90:0.0032858436,MH751946.1_Eimeria_ferrisi:0.0000022560)70:0.0012059051);
+
+TIME STAMP
+----------
+
+Date and time: Tue Mar 21 03:10:05 2023
+Total CPU time used: 4334.480178 seconds (1h:12m:14s)
+Total wall-clock time used: 2678.685795 seconds (0h:44m:38s)
+
