@@ -13,3 +13,5 @@ primerL$Primer_name[86] <- "NLF184cw_74_F.NL818cw_74_R"
 p.df <- primerL[which(primerL$Primer_name%in%ptable$Primer_name),]
 
 p.df$Primer_name[p.df$Gen=="28S"]
+
+#write.csv(p.df, "tmp/Wild/Primer_list.csv") for supplementary file

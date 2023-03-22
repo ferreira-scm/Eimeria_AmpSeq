@@ -28,59 +28,64 @@ library(ggtree)
 source("R/Pre_Functions.R")
 
 
-## We make a tree per amplicon
-## Eimeria from 18S
+## We make a tree for each amplicon targeting 18S rRNA gene
+## First the ASVs from the differen amplicons from 18S
 EimASV <- readFasta("tmp/Eimeria18S.fasta")
 name_EimASV <- EimASV@id
 EimASV <- sread(EimASV)
 names(EimASV) <- name_EimASV
 
-EimSeqs <- readFasta("tmp/Eimeria_seqs.fa")
+## Now these are ourEimeria reference sequences
+EimSeqs <- readFasta("tmp/Eimeria_reference.fa")
 name_seqs <- EimSeqs@id
 EimSeqs <- sread(EimSeqs)
 names(EimSeqs) <- name_seqs
-allEim <- c(EimSeqs, EimASV)
-names(EimSeqs)
+## and let's not forget the LAB ASVs
+LabEim <- readFasta("tmp/Lab_ASVs.fa")
+name_LabEim <- LabEim@id
+LabEim <- sread(LabEim)
+names(LabEim) <- name_LabEim
 
 ##### there will be some sections here commented out because they take time to run and we saved them, so it is faster to load them instead.
+# We first do a tree only with the reference sequences
 ## align
-#allEim <- OrientNucleotides(allEim)
+#refEim.align <- OrientNucleotides(EimSeqs)
 #set.seed(12345)
-#Eim.align <- AlignSeqs(allEim, anchor=NA, iterations=20, refinements=20, processors=90)
-#Eim.align <- AdjustAlignment(Eim.align)
-
-#writeFasta(Eim.align, "tmp/Eimeria18S_wild_lab_ref.fasta")
-#writeFasta(allEim, "tmp/Eimeria18S_wild_lab_ref_notAligned.fasta")
+#refEim.align <- AlignSeqs(refEim.align, anchor=NA, iterations=20, refinements=20, processors=90)
+#refEim.align <- AdjustAlignment(refEim.align)
+#writeFasta(refEim.align, "tmp/reference_tree/Eimeria18S.fasta")
 
 ################ getting amplicon names
 amp_names <- gsub("_ASV.*", "", names18S)
 amp_names
-
-# selecting lab asv's
-LabEim <- EimSeqs[grep("Lab_single", names(EimSeqs))]
-names(LabEim) <- paste("wang1141_13_F.Nem_0425_6_3_R", names(LabEim), sep="_")
-## removing lab asv's
-refSeq <- EimSeqs[-grep("Lab_single", names(EimSeqs))]
 amp_levels <- levels(as.factor(amp_names))
-
 # removing 28S primer
 amp_levels <-amp_levels[!amp_levels=="D3A_5Mod_46_F.D3B_5Mod_46_R"]
+
+# renanming Lab ASVs
+names(LabEim) <- paste("wang1141_13_F.Nem_0425_6_3_R", names(LabEim), sep="_")
 
 # alignming ASV per amplicon to reference
 #amp_al <- list()
 #for (i in seq(1:length(amp_levels))){
-#    amp_al[i] <- AlignSeqs(c(EimASV[grep(amp_levels[i], names(EimASV))], refSeq), anchor=NA, iterations=20, refinements=20, processors=90)
+#    amp_al[i] <- AlignSeqs(c(EimASV[grep(amp_levels[i], names(EimASV))], EimSeqs), anchor=NA, iterations=20, refinements=20, processors=90)
 #}
-
+#
 ### quick fix here to add lab ASVs
-#amp_al[9] <- AlignSeqs(c(EimASV[grep(amp_levels[9], names(EimASV))], refSeq, LabEim), anchor=NA, iterations=20, refinements=20, processors=90)
+#amp_al[9] <- AlignSeqs(c(EimASV[grep(amp_levels[9], names(EimASV))], EimSeqs, LabEim), anchor=NA, iterations=20, refinements=20, processors=90)
 #amp_al[[9]] <- Lab_al
-
+#
 #save fastas
 #for (i in seq(1:length(amp_levels))){
-#writeFasta(amp_al[[i]], paste("tmp/amplicon_alignments/amplicon", i, sep=""))
+#writeFasta(amp_al[[i]], paste("tmp/amplicon_alignments/Refamplicon", i, sep=""))
 #}
 
+#Eim_all <- AlignSeqs(c(EimASV, EimSeqs, LabEim), anchor=NA, iterations=20, refinements=20, processors=90)
+#writeFasta(Eim_all, "tmp/RefEim_all.fasta")
+
+#~/iqtree-2.2.0-Linux/bin/iqtree2 -s "tmp/RefEim_all.fasta" -m TN+F+R2 -B 5000 -T AUTO --nmax 2000
+
+#for f in tmp/amplicon_alignments/Refamplicon* ; do ~/iqtree-2.2.0-Linux/bin/iqtree2 -s $f -m TN+F+R2 -B 5000 -T AUTO --nmax 2000; done
 
 ############## run this outside R
 #cd tmp
@@ -101,7 +106,7 @@ amp_levels <-amp_levels[!amp_levels=="D3A_5Mod_46_F.D3B_5Mod_46_R"]
 #writeFasta(refSeq_al, "tmp/reference_tree/Eimeria18S_ref.fasta")
 
 # trees outside R
-##~/iqtree-2.2.0-Linux/bin/iqtree2 -s  "tmp/reference_tree/Eimeria18S_ref.fasta -m TN+F+R2 -B 5000 -T AUTO
+##~/iqtree-2.2.0-Linux/bin/iqtree2 -s  "tmp/reference_tree/Eimeria18S_ref -m TN+F+R2 -B 5000 -T AUTO --nmax 2000
 
 #~/iqtree-2.2.0-Linux/bin/iqtree2 -s tmp/28S_tree/Eimeira_ASV28S_align.fasta -m MFP -B 5000 -T AUTO
 
@@ -111,6 +116,7 @@ amp_levels <-amp_levels[!amp_levels=="D3A_5Mod_46_F.D3B_5Mod_46_R"]
 ####################################################################
 ############################################################################
 # I need set 3 groups of reference sequences (ferrisi, vermiformis, falciformis)
+
 fer <- c(names(EimSeqs)[grep("ferrisi",names(EimSeqs))],"AF246717_Eimeria_telekii", "AF311643_Eimeria_separata")
 fal <- names(EimSeqs)[grep("falciformis|JQ993650|KU174466|KU174449|KU174463|KU174481|JQ993657|JQ993666|KU174452|KU174470|KU174472|KU174473|KU174471|KU174460|KU174450|KU174455|KU174451|KU174456|KU174474|KU174461|KU174454|KU174458|KU174464|AF311644|KU174457|KU174453|KU174469|KU174476|KU174486|KU174478|KU174484|KU192956|JQ993665",names(EimSeqs))]
 ver <- names(EimSeqs)[grep("vermiformis|KU192931|KU192936|KU174467|KU192916|KU174465",names(EimSeqs))]
@@ -123,7 +129,7 @@ amplicon <- data.frame(names_ASVs)
 amplicon$species <- "sp"
 amplicon$BS <- NA
 
-OutGroup <- names(refSeq)[1:3]
+OutGroup <- names(EimSeqs)[1:3]
 
 species_ASV <- function(fer, name, phyloT, OutGroup) {
     phyloT <- root(phyloT, OutGroup)
@@ -162,7 +168,7 @@ for (i in (1:length(phyloT))){
 }
 
 amplicon$species[grep("D3A_5", amplicon$names_ASVs)] <- "28S"
-amplicon$BS[grep("D3A_5", amplicon$names_ASVs)] <- 1
+amplicon$BS[grep("D3A_5", amplicon$names_ASVs)] <- NA
 
 # inspection
 amplicon[amplicon$species=="ferrisi",]
@@ -171,13 +177,10 @@ amplicon[amplicon$species=="falciformis",]
 
 amplicon[amplicon$species=="vermiformis",]
 
-amplicon
 
 #### manual visualization from the tree for the 4 unassigned  asv'S
 amplicon$species[amplicon$names_ASVs=="MarkN_10_F.Proti440R_28_R_ASV_5"] <- "falciformis"
 amplicon$BS[amplicon$names_ASVs=="MarkN_10_F.Proti440R_28_R_ASV_5"] <- 96
-
-amplicon$BS[amplicon$names_ASVs=="18S_0067a_deg_3Mod_53_F.NSR399_3Mod_53_R_ASV_4"] <- 1
 
 amplicon$species[amplicon$names_ASVs=="wang1141_13_F.Nem_0425_6_3_R_ASV_2"] <- "falciformis"
 amplicon$BS[amplicon$names_ASVs=="wang1141_13_F.Nem_0425_6_3_R_ASV_2"] <- 43
@@ -193,6 +196,7 @@ amplicon2 <- amplicon
 
 # removing lab ASVs
 amplicon <- amplicon[-grep("Lab", amplicon$names_ASVs),]
+write.csv(amplicon, "tmp/Amplicon_tax.csv")
 
 #sanity check
 Eim@tax_table[,7] <- amplicon$species
@@ -245,7 +249,6 @@ summary(adjm<0)
 E(net.grph)$weight
 E(net.grph)$color <- "darkseagreen"
 E(net.grph)$color[which(E(net.grph)$weight<0)] <- "firebrick"
-E(net.grph)$color
 
 # we also want the node color to code for amplicon
 #amp <- as.factor(gsub("_ASV_[0-9]", "", names18S))
@@ -253,31 +256,25 @@ E(net.grph)$color
 #coul <- colorRampPalette(brewer.pal(8, "Set3"))(nb.col)
 #mc <- coul[as.numeric(amp)]
 
+V(net.grph)$species
+
+
 V(net.grph)$colour <- "black"
 V(net.grph)$colour[V(net.grph)$species=="ferrisi"] <- "darkgoldenrod2"
 V(net.grph)$colour[V(net.grph)$species=="falciformis"] <- "darkolivegreen"
 V(net.grph)$colour[V(net.grph)$species=="vermiformis"] <- "cornflowerblue"
 V(net.grph)$colour[V(net.grph)$species=="Unknown"] <- "deeppink4"
 
-
-
-#V(net.grph)$shape <- "circle"
+V(net.grph)$colour
 
 # sanity check
 names(V(net.grph))==amplicon$names_ASVs
 #amplicon$BS <- as.numeric(amplicon$BS)
 
 E(net.grph)$weight <- abs(E(net.grph)$weight)
-
-# now plotting
-pdf("fig/Figure4_Eimeria_ASVs_Network.pdf",
-                width =15, height = 15)
-
 V(net.grph)$species <- amplicon$species
 V(net.grph)$species[V(net.grph)$species=="28S"] <- "Unknown"
 V(net.grph)$species[V(net.grph)$species=="sp"] <- "Unknown"
-
-taxa_sums(Eim.TSSw)
 
 pdf("fig/Figure4.pdf",
                 width =8, height = 8)
@@ -312,3 +309,5 @@ Eim.TSSw@tax_table[,7] <- amplicon$species_FINAL
 
 ## save Eim phyloseq object
 saveRDS(Eim, "tmp/Wild/EimeriaSpeciesAssign.RDS")# why am I doing this?
+
+
