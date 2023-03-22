@@ -55,7 +55,7 @@ MA.e.0 <- MA.e[MA.e$Genome_copies_ngDNA>0,]
 MA.e.0 <- MA.e.0[MA.e.0$Abundance>0,]
 MA.e.0 <-MA.e.0[!is.na(MA.e.0$Abundance),]
 
-## Let's do the correlations first
+## only positive samples
 SA.ASV <- SA.e[SA.e$Genome_copies_ngDNA>0,]
 SA.e.g0 <- SA.e.g[SA.e.g$Genome_copies_ngDNA>0,]
 SA.e.g0 <- SA.e.g0[SA.e.g0$Abundance>0,]
@@ -161,9 +161,8 @@ ASV_ab <- ggplot(SA.e, aes(x=Abundance, y=ASV))+
                                   margin=margin(10,0,10,0),
                                   size=12),
           legend.position="none")
-
-
 Figure2 <- cowplot::plot_grid(plot_SA_all, ASV_ab, nrow=2, labels="auto")
+
 ggplot2::ggsave("fig/Figure2.pdf", Figure2, width = 6, height = 8, dpi = 300)
 ggplot2::ggsave("fig/Figure2.png", Figure2, width = 6, height = 8, dpi = 300)
 
