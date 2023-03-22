@@ -1,13 +1,10 @@
 # Eimeria_AmpSeq
 
-Code, figures and intermediate files for "Eimeria quatification using
-amplicom sequencing" manuscript
+Code, figures and intermediate files for "Amplicon sequencing allows differential quantification of closely related parasite species: an example from rodent coccidia (Eimeria)" manuscript
 
-Start running the code from Lab_6* and/or Wild_8*
-Better, yet, we renamed the script so you start at 1_*
+Start running the code from 1_Lab_filter.R
 
-Here is how the figures and tables in the manuscript are created in
-the code.
+Here is how the figures and tables in the manuscript are created in the code.
 
 
 | File reference | Created in                         | File in ropository                             |
