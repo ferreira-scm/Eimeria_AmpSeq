@@ -7,7 +7,7 @@ Start running the code from 1_Lab_filter.R
 Here is how the figures and tables in the manuscript are created in the code.
 
 
-| File reference | Created in                         | File in ropository                             |
+| File reference | Created in                         | File in repository                             |
 |:---------------|------------------------------------|:-----------------------------------------------|
 | Table 1        | R/3_Lab_Fig1_Fig2.R                | text only                                      |
 | Table 2        | R/2_Lab_S1_S2_detec.R              | text only                                      |
