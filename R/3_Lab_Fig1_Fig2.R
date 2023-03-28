@@ -15,6 +15,12 @@ library(MuMIn)
 
 source("R/1_Lab_filter.R")
 
+library("extrafont")
+font_import() # import font
+fonts()
+loadfonts()# register fonts with pdf
+
+
 # Do ASV match beween MA and SA?
 rownames(Eim2@tax_table) %in% rownames(Eim@tax_table)
 colnames(Eim@otu_table)[1] == colnames(Eim2@otu_table)[1]
@@ -135,13 +141,13 @@ plot_SA_all <- ggplot(SA.e.g0, aes(x=log(Abundance), y=log(Genome_copies_ngDNA))
     ggtitle("Standard PCR: Eimeria quantification")+
     guides(fill=guide_legend(ncol=2))+
     annotate(geom="text", x=min(log(SA.e.g0$Abundance)), y=max(log(SA.e.g0$Genome_copies_ngDNA)), hjust=0.05, label=paste("Pearson's rho=", round(cor.sa$estimate, 2), ", p<0.001, ", "df= ", cor.sa$parameter, sep=""))+
+    labs(fill="DPI")+
         theme_bw(base_size=10)+
     theme(axis.title.x = element_text(vjust = 0, size = 12),
           axis.title.y = element_text(vjust = 2, size = 12),
           plot.title=element_text(face="bold",
                                   margin=margin(10,0,10,0),
                                   size=12))
-
 ASV.col <-  c("dodgerblue4",
               "darkolivegreen4",
               "darkorchid3",
@@ -163,8 +169,10 @@ ASV_ab <- ggplot(SA.e, aes(x=Abundance, y=ASV))+
           legend.position="none")
 Figure2 <- cowplot::plot_grid(plot_SA_all, ASV_ab, nrow=2, labels="auto")
 
-ggplot2::ggsave("fig/Figure2.pdf", Figure2, width = 6, height = 8, dpi = 300)
-ggplot2::ggsave("fig/Figure2.png", Figure2, width = 6, height = 8, dpi = 300)
+
+Figure2
+
+ggplot2::ggsave("fig/Figure2.pdf", Figure2, width=170, height=200, units="mm", dpi = 300)
 
 ############### Do all ASVs explain Eimeria genome copies?
 ################ preparing dataset for regressions
@@ -240,6 +248,7 @@ SA2 <- ggplot(SA.e2, aes(x=dpi, y=log(1+Abundance)))+
     scale_fill_manual(values=col)+
     stat_summary(fun=mean, geom="point", colour="black", shape=23, size=5, aes(fill= dpi))+
     geom_line(aes(group=EH_ID), alpha=0.05)+
+    labs(fill="DPI")+
     ylab("Eimeria ASV2 abundance, log(+1)")+
     xlab("Day post infection")+
     ggtitle("Standard PCR ASV2")+
@@ -260,6 +269,7 @@ SA1 <- ggplot(SA.e1, aes(x=dpi, y=log(1+Abundance)))+
     geom_line(aes(group=EH_ID), alpha=0.05)+
     ylab("Eimeria ASV1 abundance, log(+1)")+
     xlab("Day post infection")+
+    labs(fill="DPI")+
     ggtitle("Standard PCR ASV1")+
     coord_cartesian(ylim=c(0,1))+
     theme_bw(base_size=10)+
@@ -277,6 +287,7 @@ MA2 <- ggplot(MA.e2, aes(x=dpi, y=log(1+Abundance)))+
     geom_line(aes(group=EH_ID), alpha=0.05)+
     ylab("Eimeria ASV2 abundance, log(+1)")+
     xlab("Day post infection")+
+    labs(fill="DPI")+
     ggtitle("Microfluidics PCR ASV2")+
     coord_cartesian(ylim=c(0,0.1))+
     theme_bw(base_size=10)+
@@ -293,6 +304,7 @@ MA1 <- ggplot(MA.e1, aes(x=dpi, y=log(1+Abundance)))+
     stat_summary(fun=mean, geom="point", colour="black", shape=23, size=5, aes(fill= dpi))+
     geom_line(aes(group=EH_ID), alpha=0.05)+
     ylab("Eimeria ASV1 abundance, log(+1)")+
+    labs(fill="DPI")+
     xlab("Day post infection")+
     ggtitle("Microfluidics PCR ASV1")+
         coord_cartesian(ylim=c(0,1))+
@@ -309,9 +321,7 @@ FigureS3 <-cowplot::plot_grid(SA1, SA2, MA1, MA2,
               labels="auto",
               nrow=2)
 
-ggplot2::ggsave("fig/FigureS3.pdf", FigureS3, width = 10, height = 6, dpi = 300)
-ggplot2::ggsave("fig/FigureS3.png", FigureS3, width = 10, height = 6, dpi = 300)
-
+ggplot2::ggsave("fig/FigureS3.pdf", FigureS3, width = 170, height = 150, units="mm", dpi = 300)
 
 ############### comparison between standard and microfluidics ASVs
 ma.sa_1 <- SA.e[, c("ASV", "Abundance", "EH_ID", "dpi", "labels")]
@@ -347,10 +357,10 @@ ASV2.c <-ggplot(ma.sa[ma.sa$ASV=="ASV2",], aes(x=Abundance.x, y=Abundance.y))+
     theme(axis.title.x = element_text(vjust = 0, size = 12),
           axis.title.y = element_text(vjust = 2, size = 12))
 
-Fig1 <- plot_grid(ASV1.c, ASV2.c, labels="auto", nrow=1, align="hv")
+Fig1 <- plot_grid(ASV1.c, ASV2.c, labels="auto", nrow=2, align="hv")
 Fig1
 
-ggplot2::ggsave(file="fig/Figure1.pdf", Fig1, width = 8, height = 4, dpi = 300)
-ggplot2::ggsave(file="fig/Figure1.png", Fig1, width = 8, height = 4, dpi = 300)
+ggplot2::ggsave(file="fig/Figure1.pdf", Fig1, width = 85, height = 170, units="mm", dpi = 300)
+
 
 

@@ -69,8 +69,9 @@ Com.m.all_amp <- ggplot(eim.mp, aes(x=Sample, y=Abundance, fill=Genus))+
       legend.position="none")
 
 legend <- get_legend(Com.m.all_amp+
-                     guides(fill=guide_legend(override.aes=list(size=6),nrow=4))+
+                     guides(fill=guide_legend(override.aes=list(size=4),nrow=4))+
                      theme(legend.text = element_text(size = 9),
+                          legend.title=(element_text(size=10)),
       legend.position="bottom"))
 
 legend2 <- get_legend(Com.m.all+
@@ -82,7 +83,7 @@ legend2 <- get_legend(Com.m.all+
 Comp_amplicon2 <- cowplot::plot_grid(legend, Com.m.all_amp, Com.m.all, legend2, ncol=1, rel_heights=c(0.25,0.8,0.8,0.04))
 Comp_amplicon2
 
-ggplot2::ggsave(file="fig/FigureS4.pdf", Comp_amplicon2, height=8, width=10, dpi=400)
+ggplot2::ggsave(file="fig/FigureS4.pdf", Comp_amplicon2, height=170, width=260, dpi=300, units="mm")
 
 #####################################################################
 # Ok, let's try and figure it out what is happening with these co-infections
@@ -160,7 +161,7 @@ fa.eff <- ggplot(Eimdf1, aes(x=Falciformis, y=BMI))+
     theme(axis.title.x = element_text(vjust = 0, size = 12),
           axis.title.y = element_text(vjust = 2, size = 12))
 
-Figure5 <-cowplot::plot_grid(fe.eff, fa.eff, labels="auto", nrow=1, align="hv")
-Figure5
+Figure6 <-cowplot::plot_grid(fe.eff, fa.eff, labels="auto", nrow=2, align="hv")
+Figure6
 
-ggplot2::ggsave(file="fig/Figure5.pdf", Figure5, width = 8, height = 4, dpi = 300)
+ggplot2::ggsave(file="fig/Figure6.pdf", Figure6, width = 85, height = 170, dpi = 200, units="mm")

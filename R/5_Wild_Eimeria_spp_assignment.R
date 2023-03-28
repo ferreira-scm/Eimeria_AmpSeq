@@ -83,7 +83,7 @@ names(LabEim) <- paste("wang1141_13_F.Nem_0425_6_3_R", names(LabEim), sep="_")
 #Eim_all <- AlignSeqs(c(EimASV, EimSeqs, LabEim), anchor=NA, iterations=20, refinements=20, processors=90)
 #writeFasta(Eim_all, "tmp/RefEim_all.fasta")
 
-#~/iqtree-2.2.0-Linux/bin/iqtree2 -s "tmp/RefEim_all.fasta" -m TN+F+R2 -B 5000 -T AUTO --nmax 2000
+#~/iqtree-2.2.0-Linux/bin/iqtree2 -s "tmp/reference_tree/Eimeria_reference.fasta" -m TN+F+R2 -B 5000 -T AUTO --nmax 2000 # for reference tree
 
 #for f in tmp/amplicon_alignments/Refamplicon* ; do ~/iqtree-2.2.0-Linux/bin/iqtree2 -s $f -m TN+F+R2 -B 5000 -T AUTO --nmax 2000; done
 
@@ -106,8 +106,6 @@ names(LabEim) <- paste("wang1141_13_F.Nem_0425_6_3_R", names(LabEim), sep="_")
 #writeFasta(refSeq_al, "tmp/reference_tree/Eimeria18S_ref.fasta")
 
 # trees outside R
-##~/iqtree-2.2.0-Linux/bin/iqtree2 -s  "tmp/reference_tree/Eimeria18S_ref -m TN+F+R2 -B 5000 -T AUTO --nmax 2000
-
 #~/iqtree-2.2.0-Linux/bin/iqtree2 -s tmp/28S_tree/Eimeira_ASV28S_align.fasta -m MFP -B 5000 -T AUTO
 
 
@@ -171,12 +169,9 @@ amplicon$species[grep("D3A_5", amplicon$names_ASVs)] <- "28S"
 amplicon$BS[grep("D3A_5", amplicon$names_ASVs)] <- NA
 
 # inspection
-amplicon[amplicon$species=="ferrisi",]
-
-amplicon[amplicon$species=="falciformis",]
-
-amplicon[amplicon$species=="vermiformis",]
-
+#amplicon[amplicon$species=="ferrisi",]
+#amplicon[amplicon$species=="falciformis",]
+#amplicon[amplicon$species=="vermiformis",]
 
 #### manual visualization from the tree for the 4 unassigned  asv'S
 amplicon$species[amplicon$names_ASVs=="MarkN_10_F.Proti440R_28_R_ASV_5"] <- "falciformis"
@@ -265,8 +260,6 @@ V(net.grph)$colour[V(net.grph)$species=="falciformis"] <- "darkolivegreen"
 V(net.grph)$colour[V(net.grph)$species=="vermiformis"] <- "cornflowerblue"
 V(net.grph)$colour[V(net.grph)$species=="Unknown"] <- "deeppink4"
 
-V(net.grph)$colour
-
 # sanity check
 names(V(net.grph))==amplicon$names_ASVs
 #amplicon$BS <- as.numeric(amplicon$BS)
@@ -276,7 +269,7 @@ V(net.grph)$species <- amplicon$species
 V(net.grph)$species[V(net.grph)$species=="28S"] <- "Unknown"
 V(net.grph)$species[V(net.grph)$species=="sp"] <- "Unknown"
 
-pdf("fig/Figure4.pdf",
+pdf("fig/Figure5.pdf",
                 width =8, height = 8)
 set.seed(1113)
 plot(net.grph,
@@ -284,12 +277,14 @@ plot(net.grph,
 #     edge.width=as.integer(cut(E(net.grph)$weight, breaks=6))/2,
      edge.width=E(net.grph)$weight,
       edge.alpha=0.1,
-     edge.color=adjustcolor(E(net.grph)$color, 0.4),
+     edge.color=adjustcolor(E(net.grph)$color, 0.7),
      vertex.color=adjustcolor(V(net.grph)$colour, 0.8),
      vertex.size=as.vector(taxa_sums(Eim.TSSw))+3,
-     frame.col="grey")
-legend(x=1, y=1, legend=c("E. ferrisi", "E. falciformis", "E. vermiformis", "Unknown"), col=c("darkgoldenrod2","darkolivegreen","cornflowerblue","deeppink4"), bty = "n", pch=20 , pt.cex = 3)
+     frame.col="grey",
+     margin=-0.1)
+legend(x=0.25, y=0.7, legend=c("E. ferrisi", "E. falciformis", "E. vermiformis", "Unknown"), col=c("darkgoldenrod2","darkolivegreen","cornflowerblue","deeppink4"), bty = "n", pch=20 , pt.cex = 3)
 dev.off()
+
 
 # the modules now
 modules =cluster_fast_greedy(net.grph, weights=abs(E(net.grph)$weight))

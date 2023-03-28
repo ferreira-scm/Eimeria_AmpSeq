@@ -8,6 +8,8 @@ library(phyloseq)
 library(cowplot)
 library(microshades)
 library("ggpmisc")
+library(microbial)
+
 source("R/1_Lab_filter.R")
 
 ############################################
@@ -113,6 +115,7 @@ a <- ggplot(df, aes(y=logGC, x=logFilEimeriaSums))+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
     ggtitle("No normalization: ASV read counts")+
+        labs(fill="DPI")+
     annotate(geom="text", x=min(df$logFilEimeriaSums), y=max(df$logGC), hjust=0.05, label=paste("Pearson's rho=", round(a.cor$estimate, 2), ", p<0.001, ", "df= ", a.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
     theme(axis.title.x = element_text(vjust = 0, size = 12),
@@ -139,6 +142,7 @@ b <- ggplot(df, aes(y=logGC, x=logTSS_Eim))+
     scale_fill_manual(values=coul2)+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
+        labs(fill="DPI")+
     ggtitle("Total sum scaling")+
     annotate(geom="text", x=min(df$logTSS_Eim), y=max(df$logGC), hjust=0.05, label=paste("Pearson's rho=", round(b.cor$estimate, 2), ", p<0.001, ", "df= ", b.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
@@ -151,7 +155,6 @@ b <- ggplot(df, aes(y=logGC, x=logTSS_Eim))+
 
 ###############################################################
 #### using TMM: Trimmed Mean by M-Values
-library(microbial)
 
 TMM.eim <- normalize(f.all.l.slv[[37]], method="TMM")
 TMM.eim <- subset_taxa(TMM.eim, Genus%in%"g__Eimeria")
@@ -175,6 +178,7 @@ c <- ggplot(df, aes(y=logGC, x=logTMM))+
     scale_fill_manual(values=coul2)+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
+        labs(fill="DPI")+
     ggtitle("Trimmed mean by M-values")+
     annotate(geom="text", x=min(df$logTMM), y=max(df$logGC), hjust=0.05, label=paste("Pearson's rho=", round(c.cor$estimate, 2), ", p<0.001, ", "df= ", c.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
@@ -205,6 +209,7 @@ d <- ggplot(df, aes(y=logGC, x=clr_Eim))+
     scale_fill_manual(values=coul2)+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
+        labs(fill="DPI")+
     ggtitle("Centered log ratio")+
     annotate(geom="text", x=min(df$clr_Eim), y=max(df$logGC), hjust=0.05, label=paste("Pearson's rho=", round(d.cor$estimate, 2), ", p<0.001, ", "df= ", d.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
@@ -238,6 +243,7 @@ e <- ggplot(df.e, aes(y=logGC, x=logEim_rare))+
     scale_fill_manual(values=coul2)+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
+        labs(fill="DPI")+
     ggtitle("Rarefied read counts")+
     annotate(geom="text", x=min(df.e$logEim_rare), y=max(df.e$logGC), hjust=0.05, label=paste("Pearson's rho=", round(e.cor$estimate, 2), ", p<0.001, ", "df= ", e.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
@@ -260,8 +266,7 @@ fCor <-cowplot::plot_grid(a, b, c, d, e,legend,
 
 fCor
 
-ggplot2::ggsave("fig/FigureS2.pdf", fCor, width = 8, height = 12, dpi = 300)
-ggplot2::ggsave("fig/FigureS2.png", fCor, width = 8, height = 12, dpi = 300)
+ggplot2::ggsave("fig/FigureS2.pdf", fCor, width = 170, height = 280, units="mm", dpi = 300)
 
 
 # testing differences between correlations
@@ -310,6 +315,7 @@ a <- ggplot(df, aes(y=logGC, x=logFilEimeriaSums))+
     scale_fill_manual(values=coul)+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
+    labs(fill="DPI")+
     ggtitle("No normalization: ASV read counts")+
     annotate(geom="text", x=min(df$logFilEimeriaSums), y=max(df$logGC), hjust=0.05, label=paste("Pearson's rho=", round(a.cor$estimate, 2), ", p<0.001, ", "df= ", a.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
@@ -337,6 +343,7 @@ b <- ggplot(df, aes(y=logGC, x=logTSS_Eim))+
     scale_fill_manual(values=coul)+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
+    labs(fill="DPI")+
     ggtitle("Total sum scaling")+
     annotate(geom="text", x=min(df$logTSS_Eim), y=max(df$logGC), hjust=0.05, label=paste("Pearson's rho=", round(b.cor$estimate, 2), ", p<0.001, ", "df= ", b.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
@@ -370,6 +377,7 @@ c <- ggplot(df, aes(y=logGC, x=logTMM))+
     scale_fill_manual(values=coul)+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
+    labs(fill="DPI")+
     ggtitle("Trimmed mean by M-values")+
     annotate(geom="text", x=min(df$logTMM), y=max(df$logGC), hjust=0.05, label=paste("Pearson's rho=", round(c.cor$estimate, 2), ", p<0.001, ", "df= ", c.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
@@ -400,6 +408,7 @@ d <- ggplot(df, aes(y=logGC, x=clr_Eim))+
     scale_fill_manual(values=coul)+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
+    labs(fill="DPI")+
     ggtitle("Centered log ratio")+
     annotate(geom="text", x=min(df$clr_Eim), y=max(df$logGC), hjust=0.05, label=paste("Pearson's rho=", round(d.cor$estimate, 2), ", p<0.001, ", "df= ", d.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
@@ -436,6 +445,7 @@ e <- ggplot(df.e, aes(y=logGC, x=logEim_rare))+
     scale_fill_manual(values=coul)+
     ylab("Eimeria genome copies (log)")+
     xlab("Eimeria ASV abundance (log)")+
+    labs(fill="DPI")+
     ggtitle("Rarefied read counts")+
     annotate(geom="text", x=min(df.e$logEim_rare), y=max(df.e$logGC), hjust=0.05, label=paste("Pearson's rho=", round(e.cor$estimate, 2), ", p<0.001, ", "df= ", e.cor$parameter, sep=""))+
     theme_bw(base_size=10)+
@@ -445,8 +455,7 @@ e <- ggplot(df.e, aes(y=logGC, x=logEim_rare))+
                                   margin=margin(10,0,10,0),
                                   size=12),
           legend.position= "none")
-e
-    
+
 # save plots of what we have so far
 legend <- get_legend(a+
           guides(fill=guide_legend(nrow=3, byrow=TRUE))+
@@ -458,8 +467,7 @@ fCor <-cowplot::plot_grid(a, b, c, d, e,legend,
               nrow=3)
 fCor
 
-ggplot2::ggsave("fig/FigureS1.pdf", fCor, width = 8, height = 12, dpi = 300)
-ggplot2::ggsave("fig/FigureS1.png", fCor, width = 8, height = 12, dpi = 300)
+ggplot2::ggsave("fig/FigureS1.pdf", fCor, width =170, height = 280, units="mm", dpi = 300)
 
 
 # testing differences between correlations
