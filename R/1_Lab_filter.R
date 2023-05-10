@@ -1,5 +1,4 @@
 #!/usr/bin/Rscript
-
 library(ggplot2)
 #library(dada2)
 #library(MultiAmplicon, lib.loc="/usr/local/lib/R/site-library/")
@@ -58,4 +57,16 @@ TSS.wang <- transform_sample_counts(f.all.l.slv[[37]], function(x) x / sum(x)) #
 
 ## OK, now we want all a dataset with only Eimeria ASVs
 Eim2 <- subset_taxa(sin18TSS.slv, Genus%in%"g__Eimeria") # for single amplicon
+Eim <- subset_taxa(TSS.wang, Genus%in%"g__Eimeria") # for multi amplicon but only one amplicon
+
+
+## eimeria sampling depth
+summary(sample_sums(subset_taxa(f.sin18.slv, Genus%in%"g__Eimeria")))
+
+summary(sample_sums(f.sin18.slv))
+
+summary(sample_sums(subset_taxa(f.all.l.slv[[37]], Genus%in%"g__Eimeria")))
+
+
+
 Eim <- subset_taxa(TSS.wang, Genus%in%"g__Eimeria") # for multi amplicon but only one amplicon

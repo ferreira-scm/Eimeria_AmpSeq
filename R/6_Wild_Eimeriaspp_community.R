@@ -39,7 +39,6 @@ EH_sort==levels(eim.m$Sample)
 
 eim.mp$Genus <- as.factor(eim.mp$Genus)
 
-
 nb.cols <- length(levels(eim.mp$Genus))+1
 mycolors <- colorRampPalette(brewer.pal(8, "Dark2"))(nb.cols)
 
@@ -105,6 +104,7 @@ Eimdf <- as.data.frame(Eimdf)
 class(Eimdf) <- "data.frame"
 
 dis2 <- phyloseq::distance(prune_samples(rownames(Eimdf[!is.na(Eimdf$BMI),]), Eim_sp), method="jaccard", type="samples")
+
 Eimdf1 <- Eimdf[!is.na(Eimdf$BMI),]
 
 permaPS=adonis2(dis2~
@@ -112,14 +112,13 @@ permaPS=adonis2(dis2~
             Eimdf1$Locality+
             Eimdf1$Year+
             Eimdf1$Sex+
-           Eimdf1$BMI,
+            Eimdf1$BMI+
+            Eimdf1$Seq_Run,
            permutations = 1000, method = "bray",
            by="margin")
 
+
 permaPS
-
-
-summary(Eimdf1$BMI)
 
 BMIm <- lmerTest::lmer(BMI~Ferrisi + Falciformis + Vermiformis +(1|Locality), data=Eimdf1)
 BMIm0 <- lmerTest::lmer(BMI~1 + (1|Locality), data=Eimdf1)
@@ -161,7 +160,98 @@ fa.eff <- ggplot(Eimdf1, aes(x=Falciformis, y=BMI))+
     theme(axis.title.x = element_text(vjust = 0, size = 12),
           axis.title.y = element_text(vjust = 2, size = 12))
 
-Figure6 <-cowplot::plot_grid(fe.eff, fa.eff, labels="auto", nrow=2, align="hv")
+
+######### testing if uninfected mice have better BMI than infected mice for each species
+Eim_2 <- subset_taxa(fPSTSSw, Genus%in%"g__Eimeria")
+Eimdf2 <-Eim_2@sam_data 
+names(Eimdf1)
+
+Eimdf1 <- Eimdf[, c("Mouse_ID", "Ferrisi", "Falciformis", "Vermiformis")]
+
+Eimdf2 <- Eimdf2[, c("Mouse_ID", "Locality", "BMI")]
+
+class(Eimdf2) <- "data.frame"
+class(Eimdf1)
+
+
+Eimdf3 <- merge(Eimdf1, Eimdf2, by="Mouse_ID", all=TRUE)
+o
+Eimdf3 <- Eimdf3[!is.na(Eimdf3$BMI),]
+
+Eimdf3$SUM <- Eimdf3$Ferrisi+Eimdf3$Falciformis+Eimdf3$Vermiformis
+
+Eimdf3$inf[Eimdf3$SUM==0] <- 0
+Eimdf3$inf[Eimdf3$SUM>0] <- 1
+
+
+Eimdf3$Ferrisi[is.na(Eimdf3$Ferrisi)] <- 0
+Eimdf3$Falciformis[is.na(Eimdf3$Falciformis)] <- 0
+Eimdf3$Vermiformis[is.na(Eimdf3$Vermiformis)] <- 0
+
+Eimdf3$fer[Eimdf3$Ferrisi==0] <- 0
+Eimdf3$fal[Eimdf3$Falciformis==0] <- 0
+Eimdf3$ver[Eimdf3$Vermiformis==0] <- 0
+
+Eimdf3$fer[Eimdf3$Ferrisi>0] <- 1
+Eimdf3$fal[Eimdf3$Falciformis>0] <- 1
+Eimdf3$ver[Eimdf3$Vermiformis>0] <- 1
+
+### prevalence
+
+library("epiR")
+
+epi.prev(pos=124, tested=619, se=0.785, sp=0.941, method="sterne", units=100, conf.level=0.95 )
+
+epi.prev(pos=58, tested=619, se=0.785, sp=0.941, method="sterne", units=100, conf.level=0.95 )
+
+epi.prev(pos=9, tested=619, se=0.785, sp=0.941, method="sterne", units=100, conf.level=0.95 )
+
+BMIm2 <- lmerTest::lmer(BMI~fer + fal + ver +(1|Locality), data=Eimdf3)
+BMIm20 <- lmerTest::lmer(BMI~1+(1|Locality), data=Eimdf3)
+
+summary(BMIm2)
+
+#plot(BMIm)
+#qqnorm(resid(BMIm))
+#qqline(resid(BMIm))
+#plotREsim(REsim(BMIm))
+
+r.squaredGLMM(BMIm2)
+
+anova(BMIm2, BMIm20)
+
+anova(BMIm2, test="LRT")
+
+library(lmerTest)
+ranova(BMIm2)
+
+summary(BMIm)
+
+
+fa <- ggpredict(BMIm2, terms="fal", type="random")
+fa$x <- as.factor(fa$x)
+fa$conf.high
+fa$conf.low
+
+
+Eimdf3$fal <- as.factor(Eimdf3$fal)
+
+fa.st <- ggplot(Eimdf3, aes(x=fal, y=BMI))+
+    geom_jitter(width=0.05, colour="gray40", alpha=0.2)+
+    geom_point(data=fa, aes(x=x, y=predicted))+
+    geom_errorbar(inherit.aes = FALSE, data=fa, aes(x=x, ymin=conf.low, ymax=conf.high), width=0.1)+
+    ylab("Body mass index")+
+    xlab("E. falciformis status")+
+    theme_bw(base_size=10)+
+    theme(axis.title.x = element_text(vjust = 0, size = 12),
+          axis.title.y = element_text(vjust = 2, size = 12))
+    fa.st
+
+
+
+Figure6 <-cowplot::plot_grid( fa.st, fe.eff, fa.eff, labels="auto", nrow=3, align="hv")
+
 Figure6
 
-ggplot2::ggsave(file="fig/Figure6.pdf", Figure6, width = 85, height = 170, dpi = 200, units="mm")
+ggplot2::ggsave(file="fig/Figure6_revised.pdf", Figure6, width = 85, height = 170, dpi = 200, units="mm")
+

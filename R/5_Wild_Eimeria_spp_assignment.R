@@ -98,15 +98,21 @@ names(LabEim) <- paste("wang1141_13_F.Nem_0425_6_3_R", names(LabEim), sep="_")
 #nameASV28 <- ASV28@id
 #ASV28 <- sread(ASV28)
 #names(ASV28) <- nameASV28
+#falc <- readFasta("tmp/NPHX01000137.1_EfaB_Contig_1463.fasta")
+#namefalc <-"E_falciformis_NPHX01000137.1"
+#falc <- ShortRead::sread(falc)
+#names(falc) <- namefalc
+#ASV28 <- OrientNucleotides(c(falc,ASV28))
 #ASV28.align <- AlignSeqs(ASV28, anchor=NA, iterations=20, refinements=20, processors=10)
-#writeFasta(ASV28.align, "tmp/28S_tree/Eimeira_ASV28S_align.fasta")
+#ASV28.align
+#writeFasta(ASV28.align, "tmp/28S_tree/Eimeiraf_ASV28S_align.fasta")
 
 # and for the reference - only tree too
 #refSeq_al <- AlignSeqs(refSeq, anchor=NA, iterations=20, refinements=20, processors=90)
 #writeFasta(refSeq_al, "tmp/reference_tree/Eimeria18S_ref.fasta")
 
 # trees outside R
-#~/iqtree-2.2.0-Linux/bin/iqtree2 -s tmp/28S_tree/Eimeira_ASV28S_align.fasta -m MFP -B 5000 -T AUTO
+#~/iqtree-2.2.0-Linux/bin/iqtree2 -s tmp/28S_tree/Eimeiraf_ASV28S_align.fasta -m MFP -B 5000 -T AUTO
 
 
 ### Now we need  to analyse which ASV's are likely from the same Eimeira.
